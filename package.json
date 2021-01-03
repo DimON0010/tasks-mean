@@ -1,0 +1,26 @@
+{
+  "name": "tasks-mean-stack",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client" : "cd ./frontend && ng serve",
+    "nodemon": "nodemon ./api/app.js",
+    "test" : "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DimON0010/tasks-mean.git"
+  },
+  "keywords": [
+    "mean-stack",
+    "tasks",
+    "app"
+  ],
+  "author": "\"Dmutro Mishchyshyn & Maksym Derevianchenko\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DimON0010/tasks-mean/issues"
+  },
+  "homepage": "https://github.com/DimON0010/tasks-mean#readme"
+}
