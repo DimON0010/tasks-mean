@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client" : "cd ./frontend && ng serve",
+    "client": "cd ./frontend && ng serve",
     "nodemon": "nodemon ./api/app.js",
     "docker": "sudo docker-compose up -d --build",
-    "test" : "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/DimON0010/tasks-mean/issues"
   },
-  "homepage": "https://github.com/DimON0010/tasks-mean#readme"
+  "homepage": "https://github.com/DimON0010/tasks-mean#readme",
+  "dependencies": {
+    "@types/node": "^14.14.19"
+  }
 }
