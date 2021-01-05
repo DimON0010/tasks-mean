@@ -1,4 +1,4 @@
-import User  from '../db/models/user.model'
+import User  from '../models/user.model'
 import { Request, Response } from "express";
 
 export class AuthService {

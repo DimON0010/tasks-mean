@@ -1,7 +1,7 @@
 import express, { Response, Request } from "express";
 import * as bodyParser  from "body-parser";
 import mongoose from "mongoose";
-// import routes from "routes";
+import routes from "./routes";
 import dotenv from "dotenv";
 
 console.clear();
@@ -15,8 +15,7 @@ const cors = require('cors');
 //app.options('*', cors());
 app.use('*', cors());
 
-
-// app.use("/", routes);
+app.use("/", routes);
 
 app.use(function(req: Request, res: Response) {
    res.status(404).send('Sorry cant find that!');

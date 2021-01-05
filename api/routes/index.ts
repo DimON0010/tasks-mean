@@ -7,7 +7,7 @@ import lists from './list.routes';
 const router = Router();
 
 router.use('/users', users);
-router.use('/lists:listId/tasks', tasks);
+router.use('/tasks', tasks);
 router.use('/lists', lists);
 
 

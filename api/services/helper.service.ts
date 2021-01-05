@@ -1,6 +1,6 @@
-import { Task, User } from '../db/models';
+import { Task, User } from '../models';
 import { NextFunction, Request, Response } from "express";
-import {IUser} from "../db/models/user.model";
+import {IUser} from "../models/user.model";
 const jwt = require('jsonwebtoken');
 
 export class HelperService {

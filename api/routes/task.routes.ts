@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
-import { Task, List } from "./../db/models";
+import { Task, List } from "../models";
 import { HelperService } from "../services/helper.service";
-import {ITask} from "../db/models/task.model";
+import {ITask} from "../models/task.model";
 
 const router = Router();
 
