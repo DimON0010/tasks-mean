@@ -1,32 +1,41 @@
-const express = require('express');
+import express, { Response, Request } from "express";
+import * as bodyParser  from "body-parser";
+import mongoose from "mongoose";
+// import routes from "routes";
+import dotenv from "dotenv";
 
+console.clear();
+dotenv.config();
 const app = express();
-const bodyParser = require('body-parser');
-const cors = require('cors');
-
-
-/* load middleware */
+/* Resolving POST, PUT, DELETE */
 app.use(bodyParser.json());
+
+// CORS
+const cors = require('cors');
 //app.options('*', cors());
 app.use('*', cors());
 
-// app.use(function(req, res, next) {
-//    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-//    res.header("Access-Control-Allow-Methods", "GET,PUT,HEAD,POST,PATCH,DELETE,OPTIONS");
-//    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-refresh-token, x-access-token, _id");
-//    res.header("Access-Control-Expose-Headers", "x-access-token, x-refresh-token");
-//
-//    next();
-// });
 
-app.use("/", routes);
+// app.use("/", routes);
 
-app.use(function(req, res, next) {
+app.use(function(req: Request, res: Response) {
    res.status(404).send('Sorry cant find that!');
 });
 
-app.listen(3000, () => {
-   console.log('App is listened on port 3000! ')
+const dbUrl = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@` +
+  `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+console.log(`Connection to: ${dbUrl}`)
+mongoose.connect(dbUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+}).then(() => {
+  console.log('Connecting to db is successful!');
+  app.listen(Number(process.env.APP_PORT) || 3000, () => {
+    console.log('App is listened on port 3000! ')
+  });
+}).catch((e) => {
+  console.log(e);
+  console.log('DATABASE ERROR');
 });
-
-

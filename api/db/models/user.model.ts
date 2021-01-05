@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwtSecret = '5127465419641829756928356sgsdgfwyegfuwef326547';
 
 export interface IUser extends Document {
+  id?: string;
   email: string;
   password: string;
   sessions: {
