@@ -1,18 +1,20 @@
 import { Task, User } from '../db/models';
+import { NextFunction, Request, Response } from "express";
+import {IUser} from "../db/models/user.model";
 const jwt = require('jsonwebtoken');
 
 export class HelperService {
     constructor() {
     }
 
-    deleteTaskFromList(_listId) {
+    deleteTaskFromList(_listId: string) {
         Task.deleteMany({
             _listId
         })
     }
-    authenticate(req, res, next) {
+    authenticate(req: Request, res: Response, next: NextFunction) {
         let token = req.headers['x-access-token'];
-        jwt.verify(token, User.getJWTSecret(), (err, decoded) => {
+        jwt.verify(token, User.getJWTSecret(), (err: Error, decoded: Object) => {
             if(err) {
                 res.status(401).send(err);
             } else {
@@ -22,7 +24,7 @@ export class HelperService {
         })
     }
 
-    verifySession(req, res, next) {
+    verifySession(req: Request, res: Response, next: NextFunction) {
         let refreshToken = req.header('x-refresh-token');
         let _id = req.header('_id');
 
@@ -38,7 +40,7 @@ export class HelperService {
 
             let isSessionValid = false;
 
-            user.sessions.forEach((session) => {
+            user.sessions.forEach((session: IUser['sessions']) => {
                 if(session.token === refreshToken) {
                     if(User.hasRefreshTokenExpired(session.expiredAt) === false) {
                         isSessionValid = true;
@@ -54,7 +56,7 @@ export class HelperService {
                 })
             }
 
-        }).catch((e) => {
+        }).catch((e: Error) => {
             res.status(401).send(e);
         })
 

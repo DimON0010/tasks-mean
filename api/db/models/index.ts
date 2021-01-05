@@ -1,8 +1,8 @@
-const { Task } = require('./task.model');
-const { List } = require('./list.model');
-const { User } = require('./user.model');
+import Task from './task.model';
+import List from './list.model';
+import User from './user.model';
 
-module.exports = {
+export default {
     Task,
     List,
     User

@@ -1,17 +1,18 @@
-import { User } from '../db/models/user.model'
+import User  from '../db/models/user.model'
+import { Request, Response } from "express";
 
 export class AuthService {
     constructor() { }
 
-    public async login(req, res): Promise<any> {
+    public async login(req: Request, res: Response): Promise<any> {
         let {email, password} = req.body;
 
         User.findByCredentials(email, password).then((user) => {
-            return user.createSession().then((refreshToken) => {
-                return user.generateAccesAuthToken().then((accessToken) => {
+            return user.createSession().then((refreshToken: string) => {
+                return user.generateAccesAuthToken().then((accessToken: string) => {
                     return {accessToken, refreshToken}
                 });
-            }).then((authTokens) => {
+            }).then((authTokens: string) => {
                 res
                     .header('x-refresh-token', authTokens.refreshToken)
                     .header('x-access-token', authTokens.accessToken)
@@ -23,13 +24,13 @@ export class AuthService {
     }
 
 
-    public async registration(req, res) {
+    public async registration(req: Request, res: Response) {
         let newUser = new User(req.body);
 
         newUser.save().then(() => {
             return newUser.createSession();
         }).then((refreshToken) => {
-            return newUser.generateAccesAuthToken().then((accessToken) => {
+            return newUser.generateAccesAuthToken().then((accessToken: string) => {
                 return {accessToken, refreshToken}
             })
         }).then((authTokens) => {
@@ -41,6 +42,4 @@ export class AuthService {
             res.status(400).send(e);
         })
     }
-
-    public async
 }

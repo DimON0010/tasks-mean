@@ -1,9 +1,9 @@
-import { Router, Request, Responce } from "express";
+import { Router, Request, Response } from "express";
 import { HelperService } from "../services/helper.service";
 
 const router = Router();
 
-router.get('/', HelperService.authenticate, (req: Request, res: Responce) => {
+router.get('/', HelperService.authenticate, (req: Request, res: Response) => {
     List.find({
         _userId: req.user_id
     }).then((lists) => {
@@ -11,7 +11,7 @@ router.get('/', HelperService.authenticate, (req: Request, res: Responce) => {
     })
 });
 
-router.post('/', HelperService.authenticate, (req: Request, res: Responce) => {
+router.post('/', HelperService.authenticate, (req: Request, res: Response) => {
     let title = req.body.title;
 
     let newList = new List({
@@ -24,7 +24,7 @@ router.post('/', HelperService.authenticate, (req: Request, res: Responce) => {
     });
 });
 
-router.patch('/:id', HelperService.authenticate, (req: Request, res: Responce) => {
+router.patch('/:id', HelperService.authenticate, (req: Request, res: Response) => {
     List.findOneAndUpdate({ _id: req.params.id, _userId: req.user_id }, {
         $set: req.body
     }).then(() => {
@@ -32,7 +32,7 @@ router.patch('/:id', HelperService.authenticate, (req: Request, res: Responce) =
     });
 });
 
-router.delete('/:id', HelperService.authenticate, (req: Request, res: Responce) => {
+router.delete('/:id', HelperService.authenticate, (req: Request, res: Response) => {
     List.findOneAndRemove({
         _id: req.body.id,
         _userId: req.user_id

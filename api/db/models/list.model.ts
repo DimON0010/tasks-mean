@@ -1,6 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose, { Schema, Document } from 'mongoose';
 
-const ListSchema = new mongoose.Schema({
+export interface IList extends Document {
+  title: string;
+  _userId: string;
+}
+
+const ListSchema: Schema = new Schema({
    title: {
        type: String,
        required: true,
@@ -13,8 +18,5 @@ const ListSchema = new mongoose.Schema({
     }
 });
 
-const List = mongoose.model('List', ListSchema);
+export default mongoose.model<IList>('List', ListSchema);
 
-module.exports = {
-    List
-}

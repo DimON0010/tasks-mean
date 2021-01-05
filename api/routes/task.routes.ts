@@ -1,18 +1,19 @@
-import { Router, Request, Responce } from "express";
+import { Router, Request, Response } from "express";
 import { Task, List } from "./../db/models";
 import { HelperService } from "../services/helper.service";
+import {ITask} from "../db/models/task.model";
 
 const router = Router();
 
-router.get('/', HelperService.authenticate, (req: Request, res: Responce) => {
+router.get('/', HelperService.authenticate, (req: Request, res: Response) => {
     Task.find({
         _listId: req.params.listId
-    }).then((tasks) => {
+    }).then((tasks: ITask[]) => {
         res.send(tasks)
     })
 })
 
-router.post('/', HelperService.authenticate, (req: Request, res: Responce) => {
+router.post('/', HelperService.authenticate, (req: Request, res: Response) => {
 
     List.findOne({
         _id: req.params.listId,
@@ -34,7 +35,7 @@ router.post('/', HelperService.authenticate, (req: Request, res: Responce) => {
     })
 });
 
-router.patch('/:taskId', HelperService.authenticate, (req: Request, res: Responce) => {
+router.patch('/:taskId', HelperService.authenticate, (req: Request, res: Response) => {
 
     List.findOne({
         _id: req.params.listId,
@@ -59,7 +60,7 @@ router.patch('/:taskId', HelperService.authenticate, (req: Request, res: Responc
 
 })
 
-router.delete('/:taskId', HelperService.authenticate, (req: Request, res: Responce) => {
+router.delete('/:taskId', HelperService.authenticate, (req: Request, res: Response) => {
 
     List.findOne({
         _id: req.params.listId,

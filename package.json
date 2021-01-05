@@ -27,6 +27,13 @@
   },
   "homepage": "https://github.com/DimON0010/tasks-mean#readme",
   "dependencies": {
-    "@types/node": "^14.14.19"
+    "@types/bcryptjs": "^2.4.2",
+    "@types/crypto-js": "^4.0.1",
+    "@types/express": "^4.17.9",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/lodash": "^4.14.167",
+    "@types/mongoose": "^5.10.3",
+    "@types/node": "^14.14.19",
+    "mongoose": "^5.11.10"
   }
 }
