@@ -1,13 +1,13 @@
-import { FilterQuery, Model } from 'mongoose';
+import { Document, FilterQuery, Model } from 'mongoose';
 
 
-export abstract class CrudController<T extends Model<any>> {
+export abstract class CrudController<I extends Document,T extends Model<I>> {
 
   protected constructor(
     private _entity: T
   ) { }
 
-  public async create(data: T): Promise<T>{
+  public async create(data: I): Promise<I>{
     try {
       const result = await this._entity.create(data);
       return result;
@@ -16,14 +16,14 @@ export abstract class CrudController<T extends Model<any>> {
     }
   }
 
-  public async read(data?: FilterQuery<T>, id: string = null): Promise<T> {
+  public async read(query?: FilterQuery<I>, id: string = null): Promise<I> {
     let result;
 
     try {
       if (id) {
         result = await this._entity.findById(id);
       } else {
-        result = await this._entity.find(data);
+        result = await this._entity.find(query);
       }
 
       console.log(result);
@@ -33,14 +33,15 @@ export abstract class CrudController<T extends Model<any>> {
     return await result;
   }
 
-  public async update(id: string, data: T): Promise<T> {
-    try {
-      const result = await this._entity.updateOne({ id }, { ...data });
-
-      return result;
-    } catch (e) {
-      console.log(e);
-    }
+  public async update(id: string, data: I): Promise<I> {
+    // try {
+    //   const result = await this._entity.findByIdAndUpdate(id, { ...data });
+    //
+    //   return result;
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    throw new Error('Not Implemented');
   }
 
   public async delete(id: string): Promise<boolean> {

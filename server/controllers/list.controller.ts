@@ -1,8 +1,8 @@
 import { CrudController } from "./crud.controller";
-import { List } from "./../models";
+import { IList, List } from "./../models";
 
 
-export class ListController extends CrudController<typeof List> {
+export class ListController extends CrudController<IList, typeof List> {
   constructor() {
     super(List);
   }

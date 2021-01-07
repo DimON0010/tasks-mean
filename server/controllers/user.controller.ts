@@ -1,8 +1,8 @@
 import { CrudController } from "./crud.controller";
-import { User } from "./../models/user.model";
+import { User, IUser } from "./../models/user.model";
 
 
-export class UserController extends CrudController<typeof User> {
+export class UserController extends CrudController<IUser,typeof User> {
  constructor() {
    super(User);
  }
