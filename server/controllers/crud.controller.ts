@@ -1,55 +1,49 @@
-import {Model, Query} from 'mongoose';
-import {RequestHandler} from "express";
+import { FilterQuery, Model } from 'mongoose';
 
-export abstract class CrudController< T extends Model<any> > {
+
+export abstract class CrudController<T extends Model<any>> {
 
   protected constructor(
-    private _entity: any & T
+    private _entity: T
   ) { }
 
   public async create(data: T): Promise<T>{
     try {
-      const result = await this._entity.create();
-
-      return await result;
-
+      const result = await this._entity.create(data);
+      return result;
     } catch(e) {
       console.log(e);
     }
   }
 
-  public read = async (
-    //data: Query<any, any, any>, id?: string
-     ): Promise<T> => {
-    try {
-      let result;
-      // id ? result = await this._entity.findById(id):
-      result = await this._entity.find();
-      console.log(result);
-        // .then((data: any): any => {
-        // console.log(data);
-        // result = data;
-        // return data
-     // })
-    return await result;
+  public async read(data?: FilterQuery<T>, id: string = null): Promise<T> {
+    let result;
 
+    try {
+      if (id) {
+        result = await this._entity.findById(id);
+      } else {
+        result = await this._entity.find(data);
+      }
+
+      console.log(result);
     } catch (e) {
       console.log(e);
     }
+    return await result;
   }
 
-  public async update(id: number, data: T): Promise<T> {
+  public async update(id: string, data: T): Promise<T> {
     try {
       const result = await this._entity.updateOne({ id }, { ...data });
 
       return result;
-
     } catch (e) {
       console.log(e);
     }
   }
 
-  public async delete(id: number): Promise<boolean> {
+  public async delete(id: string): Promise<boolean> {
     try {
       const result = await this._entity.deleteOne(id);
 

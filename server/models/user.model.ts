@@ -1,20 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose';
-const _ = require('lodash');
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const bcrypt = require('bcryptjs');
 
-const jwtSecret = '5127465419641829756928356sgsdgfwyegfuwef326547';
 
 export interface IUser extends Document {
-  id?: string;
+  _id?: string;
   email: string;
   password: string;
-  sessions: {
-    token: string;
-    expiresAt: number;
-  }[],
-  methods: Function[]
+  firstName: string;
+  lastName: string;
 }
 
 const UserSchema: Schema = new Schema({
@@ -30,17 +22,16 @@ const UserSchema: Schema = new Schema({
         required: true,
         minlength: 8
     },
-    sessions: [{
-        token: {
-            type: String,
-            required: true
-        },
-        expiresAt: {
-            type: Number,
-            required: true
-        }
-    }]
+    firstName: {
+      type: String,
+      required: true,
+      maxlength: 32,
+    },
+    lastName: {
+      type: String,
+      required: true,
+      maxlength: 32,
+    },
 })
 
 export const User = mongoose.model<IUser>('User', UserSchema);
-
