@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // CORS
 const cors = require('cors');
 //app.options('*', cors());
-app.use('*', cors());
+//app.use('*', cors());
 
 app.use("/", routes);
 

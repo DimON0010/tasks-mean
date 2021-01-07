@@ -1,13 +1,17 @@
 import { Router, Request, Response } from "express";
-import { AuthService } from "../services/auth.service";
+//import { AuthService } from "../services/auth.service";
 import { HelperService } from "../services/helper.service";
 import {UserController} from "../controllers/user.controller";
 
 const router = Router();
 
-router.post('/', UserController.registration);
+router.post('/',
+  //UserController.registration
+);
 
-router.post('/login', UserController.login);
+router.post('/login',
+  //UserController.login
+);
 
 // router.get('/me/access-token', HelperService.verifySession, (req: Request, res: Responce) => {
 //     req.userObject.generateAccesAuthToken().then((accessToken) => {

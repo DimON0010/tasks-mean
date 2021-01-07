@@ -1,16 +1,16 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import { ListController } from "../controllers/list.controller";
-// import { HelperService } from "../services/helper.service";
 
 const router = Router();
-// const helperService = new HelperService();
 
-router.get('/', ListController.read);
+const listController = new ListController();
 
-router.post('/', ListController.create);
+router.get('/', listController.read);
 
-router.patch('/:id', ListController.update);
+router.post('/', listController.create);
 
-router.delete('/:id', ListController.delete);
+//router.patch('/:id', listController.update);
+
+router.delete('/:id', listController.delete);
 
 export default router;

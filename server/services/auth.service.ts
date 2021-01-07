@@ -1,5 +1,5 @@
-import { User, IUser } from '../models/user.model'
-import { Request, Response } from "express";
+// import { User, IUser } from '../models/user.model';
+// import { Request, Response } from "express";
 
 // export class AuthService {
 //     constructor() { }
@@ -154,4 +154,4 @@ import { Request, Response } from "express";
   //   })
   // }
 
-}
+//}

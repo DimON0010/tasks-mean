@@ -4,6 +4,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IList extends Document {
   title: string;
   // _userId: string;
+  _id?: string;
 }
 
 const ListSchema: Schema = new Schema({
