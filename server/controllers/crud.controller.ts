@@ -21,9 +21,9 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
     let result;
     console.log('crudController read id: ' + id);
     try {
-      if (query.id) {
+      if (id) {
         console.log('crudController read query: ' + query);
-        result = await this._entity.findById(query.id);
+        result = await this._entity.findById(id);
       } else {
         result = await this._entity.find(query);
       }

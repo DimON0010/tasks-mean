@@ -10,6 +10,11 @@ router.get('/', async (req: Request, res: Response) => {
   res.send(result);
 });
 
+router.get('/:id', async (req: Request, res: Response) => {
+  const result = await listController.read(null, req.params.id);
+  res.send(result);
+});
+
 router.post('/', async (req: Request, res: Response) => {
   const result = await listController.create(req.body);
   res.send(result);
