@@ -1,28 +1,27 @@
-import { Document, FilterQuery, Model} from 'mongoose';
-import { ParsedQs }  from 'qs';
+import { Document, FilterQuery, Model } from 'mongoose';
+import { ParsedQs } from 'qs';
 import { Request } from "express";
 
 export abstract class CrudController<I extends Document, T extends Model<I>> {
 
   protected constructor(
     private _entity: T
-  ) { }
+  ) {
+  }
 
-  public async create(data: I): Promise<I>{
+  public async create(data: I): Promise<I> {
     try {
       const result = await this._entity.create(data);
       return result;
-    } catch(e) {
+    } catch (e) {
       throw new Error(`Create method is failed: ${e}`);
     }
   }
 
-  public async read( query?: FilterQuery<I>,  id: string | ParsedQs | string[] | ParsedQs[] = null): Promise<I> {
+  public async read(query?: FilterQuery<I>, id: string | ParsedQs | string[] | ParsedQs[] = null): Promise<I> {
     let result;
-    console.log('crudController read id: ' + id);
     try {
       if (id) {
-        console.log('crudController read query: ' + query);
         result = await this._entity.findById(id);
       } else {
         result = await this._entity.find(query);
@@ -36,24 +35,17 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
 
   public async update(id: string | ParsedQs | string[] | ParsedQs[], data: Request["body"]): Promise<I> {
     try {
-      const result = await this._entity.findByIdAndUpdate(id, { ...data });
+      const result = await this._entity.findByIdAndUpdate(id, {...data});
 
       return result;
     } catch (e) {
-      console.log(e);
+      throw new Error(`Update is failed: ${e}`);;
     }
-    throw new Error('Not Implemented');
   }
 
   public async delete(id: string | ParsedQs | string[] | ParsedQs[] = null): Promise<boolean> {
-    let result;
     try {
-      if(id) {
-        result = await this._entity.findByIdAndDelete(id);
-
-      } else {
-        console.log('Here is Johnny!');
-      }
+      const result = await this._entity.findByIdAndDelete(id);
 
       return result;
     } catch (e) {

@@ -5,13 +5,8 @@ import { ListController } from "../controllers/list.controller";
 const router = Router();
 const listController = new ListController();
 
-router.get('/', async (req: Request, res: Response) => {
-  const result = await listController.read(req.params);
-  res.send(result);
-});
-
-router.get('/:id', async (req: Request, res: Response) => {
-  const result = await listController.read(null, req.params.id);
+router.get('/:listId?', async (req: Request, res: Response) => {
+  const result = await listController.read(req.query, req.params.listId);
   res.send(result);
 });
 
@@ -20,11 +15,13 @@ router.post('/', async (req: Request, res: Response) => {
   res.send(result);
 });
 
-//router.patch('/:id', listController.update);
+router.patch('/:listId', async (req: Request, res: Response) => {
+  const result = await listController.update(req.params.listId, req.body);
+  res.send(result);
+});
 
-router.delete('/', async (req: Request, res: Response) => {
-  console.log('listRouter req.query: ' + req.query);
-  const result = await listController.delete(req.query.id);
+router.delete('/:listId', async (req: Request, res: Response) => {
+  const result = await listController.delete(req.params.listId);
   res.send(result);
 });
 
