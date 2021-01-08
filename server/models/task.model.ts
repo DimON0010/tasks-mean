@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, SchemaTypes } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 
 export interface ITask extends Document {
@@ -15,7 +15,7 @@ const TaskSchema: Schema = new Schema({
         trim: true
     },
     _listId: {
-        type: SchemaTypes.ObjectId,
+        type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
     completed: {

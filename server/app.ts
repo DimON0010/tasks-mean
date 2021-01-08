@@ -15,7 +15,7 @@ const cors = require('cors');
 //app.options('*', cors());
 //app.use('*', cors());
 
-app.use("/", routes);
+app.use("/api", routes);
 
 app.use(function(req: Request, res: Response) {
    res.status(404).send('Sorry cant find that!');

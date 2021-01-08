@@ -17,6 +17,10 @@ router.post('/', async (req: Request, res: Response) => {
 
 //router.patch('/:id', listController.update);
 
-router.delete('/:id', listController.delete);
+router.delete('/', async (req: Request, res: Response) => {
+  console.log('listRouter req.query: ' + req.query);
+  const result = await listController.delete(req.query.id);
+  res.send(result);
+});
 
 export default router;

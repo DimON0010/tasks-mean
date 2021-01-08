@@ -2,84 +2,31 @@ import { Router, Request, Response } from "express";
 import { Task, List } from "../models";
 import { HelperService } from "../services/helper.service";
 import {ITask} from "../models/task.model";
+import { TaskController } from "../controllers/task.controller";
 
 const router = Router();
+const taskController = new TaskController;
 
-// router.get('/', HelperService.authenticate, (req: Request, res: Response) => {
-//     Task.find({
-//         _listId: req.params.listId
-//     }).then((tasks: ITask[]) => {
-//         res.send(tasks)
-//     })
+router.get('/', async (req: Request, res: Response) => {
+  console.log(req.query._id);
+  const result = await taskController.read(req.query, req.query.id);
+  res.send(result);
+});
+
+router.post('/',  async (req: Request, res: Response) => {
+  const result = await taskController.create(req.body);
+  res.send(result);
+});
+
+// router.patch('/:taskId', (req: Request, res: Response) => {
+//   const result = taskController.update(id, req.data);
+//   res.send(result);
 // })
-//
-// router.post('/', HelperService.authenticate, (req: Request, res: Response) => {
-//
-//     List.findOne({
-//         _id: req.params.listId,
-//         _userId: req.user_id
-//     }).then((list) => {
-//         return !!list
-//     }).then((canCreateTask) => {
-//         if(canCreateTask) {
-//             let newTask = new Task({
-//                 title: req.body.title,
-//                 _listId: req.params.listId
-//             });
-//             newTask.save().then((newTaskDoc) => {
-//                 res.send(newTaskDoc);
-//             });
-//         } else {
-//             res.sendStatus(404);
-//         }
-//     })
-// });
-//
-// router.patch('/:taskId', HelperService.authenticate, (req: Request, res: Response) => {
-//
-//     List.findOne({
-//         _id: req.params.listId,
-//         _userId: req.user_id
-//     }).then((list) => {
-//         return !!list;
-//     }).then((canUpdateTask) => {
-//         if(canUpdateTask) {
-//             Task.findOneAndUpdate({
-//                 _id: req.params.id,
-//                 _listId: req.params.listId
-//             }, {
-//                 $set: req.body
-//             }).then(() => {
-//                 res.send({message: 'Update successfully.'})
-//             })
-//         } else {
-//             res.sendStatus(404);
-//         }
-//     })
-//
-//
-// })
-//
-// router.delete('/:taskId', HelperService.authenticate, (req: Request, res: Response) => {
-//
-//     List.findOne({
-//         _id: req.params.listId,
-//         _userId: req.user_id
-//     }).then((list) => {
-//         return !!list;
-//     }).then((canDeleteTask) => {
-//         if (canDeleteTask) {
-//             Task.findOneAndRemove({
-//                 _id: req.params.id,
-//                 _listId: req.params.listId
-//             }).then((removedTaskDoc) => {
-//                 res.send(removedTaskDoc)
-//             })
-//         } else {
-//             res.sendStatus(404);
-//         }
-//     })
-//
-// })
+
+router.delete('/:taskId', (req: Request, res: Response) => {
+  console.log('req.params.taskId: ' + req.params.taskId);
+  const result = taskController.delete(req.params.taskId);
+  res.send(result);
+})
 
 export default router;
