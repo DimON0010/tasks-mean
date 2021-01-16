@@ -2,6 +2,7 @@ import { Document, FilterQuery, Model } from 'mongoose';
 import { ParsedQs } from 'qs';
 import { Request } from "express";
 
+
 export abstract class CrudController<I extends Document, T extends Model<I>> {
 
   protected constructor(
