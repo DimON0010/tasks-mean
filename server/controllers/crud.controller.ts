@@ -30,7 +30,8 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
     } catch (e) {
       throw new Error(`Read method is failed: ${e}`);
     }
-    return result;
+    // TODO: remove any
+    return result as any;
   }
 
   public async update(id: string | ParsedQs | string[] | ParsedQs[], data: Request["body"]): Promise<I> {
@@ -46,8 +47,8 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
   public async delete(id: string | ParsedQs | string[] | ParsedQs[] = null): Promise<boolean> {
     try {
       const result = await this._entity.findByIdAndDelete(id);
-
-      return result;
+      // TODO: remove any
+      return result as any;
     } catch (e) {
       throw new Error(`Delete is failed: ${e}`);
     }
