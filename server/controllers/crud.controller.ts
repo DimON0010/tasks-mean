@@ -19,7 +19,7 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
     }
   }
 
-  public async read(query?: FilterQuery<I>, id: string | ParsedQs | string[] | ParsedQs[] = null): Promise<I> {
+  public async read(query?: FilterQuery<I>, id: string | ParsedQs | string[] | ParsedQs[] = null): Promise<I | I[]> {
     let result;
     try {
       if (id) {
@@ -31,8 +31,8 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
     } catch (e) {
       throw new Error(`Read method is failed: ${e}`);
     }
-    // TODO: remove any
-    return result as any;
+
+    return result;
   }
 
   public async update(id: string | ParsedQs | string[] | ParsedQs[] = null, data: Request["body"]): Promise<I> {
@@ -49,15 +49,15 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
       //why do result returned to console, but not to the res.send()???
       return result;
     } catch (e) {
-      throw new Error(`Update is failed: ${e}`);;
+      throw new Error(`Update is failed: ${e}`);
     }
   }
 
-  public async delete(id: string | ParsedQs | string[] | ParsedQs[] = null): Promise<boolean> {
+  public async delete(id: string | ParsedQs | string[] | ParsedQs[] = null): Promise<I | boolean> {
     try {
       const result = await this._entity.findByIdAndDelete(id);
-      // TODO: remove any
-      return result as any;
+
+      return result;
     } catch (e) {
       throw new Error(`Delete is failed: ${e}`);
     }
