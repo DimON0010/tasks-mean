@@ -12,6 +12,7 @@ const TaskSchema: Schema = new Schema({
         type: String,
         required: true,
         minlength: 1,
+        maxlength: 128,
         trim: true
     },
     _listId: {
