@@ -3,18 +3,19 @@ import * as bodyParser  from "body-parser";
 import mongoose from "mongoose";
 import routes from "./routes";
 import dotenv from "dotenv";
-
+// import * as cors from 'cors';
 
 console.clear();
 dotenv.config();
 const app = express();
 /* Resolving POST, PUT, DELETE */
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // CORS
 const cors = require('cors');
 //app.options('*', cors());
-//app.use('*', cors());
+app.use('*', cors());
 
 app.use("/api", routes);
 
