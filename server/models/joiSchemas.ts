@@ -1,6 +1,19 @@
-const Joi = require('@hapi/joi')
-Joi.objectId = require('joi-objectid')(Joi)
+
 // import { Task, List } from './index';
+import * as Joi from "joi";
+import { Task } from "./task.model";
+import { User } from "./user.model";
+
+export const taskGetValidator: Joi.ObjectSchema< typeof Task> = Joi.object().keys({
+  taskId: Joi.string().min(1).max(128).required()
+});
+
+export const userPostValidator: Joi.ObjectSchema<typeof User> = Joi.object().keys({
+      email: Joi.string().email().required(),
+      password: Joi.string().min(8).max(32).required(),
+      firstName: Joi.string().min(1).max(32).required(),
+      lastName: Joi.string().min(1).max(32).required()
+})
 
 export const joiSchemas = {
   Task: {
@@ -9,7 +22,7 @@ export const joiSchemas = {
     }),
     taskBody: Joi.object().keys({
       title: Joi.string().min(1).max(64).required(),
-      _listId: Joi.objectId().required(),
+      _listId: Joi.string().length(24).required(),
       completed: Joi.boolean().required()
     }),
     taskPatchBody: Joi.object().keys({
@@ -26,13 +39,36 @@ export const joiSchemas = {
     }),
     listBody: Joi.object().keys({
       title: Joi.string().min(1).max(64).required(),
-      _userId: Joi.objectId(),
+      _userId: Joi.string().length(24),
     }),
     listPatchBody: Joi.object().keys({
       title: Joi.string().min(1).max(64).required()
     }),
     listQuery: Joi.object().keys({
       title: Joi.string().min(1).max(64)
+    })
+  },
+  User: {
+    userParams: Joi.object().keys({
+      userId: Joi.string().min(1).max(128).required()
+    }),
+    userRegBody: Joi.object().keys({
+      email: Joi.string().email().required(),
+      password: Joi.string().min(8).max(32).required(),
+      firstName: Joi.string().min(1).max(32).required(),
+      lastName: Joi.string().min(1).max(32).required()
+    }),
+    userLogBody: Joi.object().keys({
+      email: Joi.string().email().required(),
+      password: Joi.string().min(8).max(32).required(),
+    }),
+    userPatchBody: Joi.object().keys({
+      firstName: Joi.string().min(1).max(32),
+      lastName: Joi.string().min(1).max(32)
+    }),
+    userQuery: Joi.object().keys({
+      firstName: Joi.string().min(1).max(32),
+      lastName: Joi.string().min(1).max(32)
     })
   }
 }

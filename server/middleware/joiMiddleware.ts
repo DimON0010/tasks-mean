@@ -1,8 +1,8 @@
-const Joi = require('joi');
+import * as Joi from 'joi';
 import { Request, Response, NextFunction} from "express";
 
 
-export const joiMiddleware = (schema: typeof Joi.Schema, property: 'query' | 'params' | 'body') => {
+export const joiMiddleware = (schema: Joi.Schema, property: 'query' | 'params' | 'body') => {
 
   return (req: Request, res: Response, next: NextFunction) => {
     const { error } = schema.validate(req[property]);

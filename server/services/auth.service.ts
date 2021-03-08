@@ -1,15 +1,36 @@
-// import { User, IUser } from '../models/user.model';
+import bcrypt from 'bcryptjs';
+
 // import { Request, Response } from "express";
 
-// export class AuthService {
-//     constructor() { }
+ export class AuthService {
+     constructor() { }
+
+     static passwordComparison(password: string, hash: string): boolean {
+        return bcrypt.compareSync(password, hash);
+      }
+
+     static hashPassword(password: string): string {
+        let genSalt: string;
+        let result: string;
+
+        bcrypt.genSalt(10, function(err, salt) {
+          genSalt = salt;
+        });
+
+        bcrypt.hash(password, genSalt, function(err, hash) {
+            result = hash;
+          })
+
+        return result;
+     }
+ }
 //
 //     public async login(req: Request, res: Response): Promise<any> {
 //         let {email, password} = req.body;
 //
 //         User.findByCredentials(email, password).then((user: typeof User) => {
 //             return user.createSession().then((refreshToken: string) => {
-//                 return user.generateAccesAuthToken().then((accessToken: string) => {
+//                 return user.generateAccessAuthToken().then((accessToken: string) => {
 //                     return {accessToken, refreshToken}
 //                 });
 //             }).then((authTokens: string) => {

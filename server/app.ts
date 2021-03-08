@@ -3,7 +3,7 @@ import * as bodyParser  from "body-parser";
 import mongoose from "mongoose";
 import routes from "./routes";
 import dotenv from "dotenv";
-// import * as cors from 'cors';
+import * as cors from 'cors';
 
 console.clear();
 dotenv.config();
