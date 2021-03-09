@@ -4,9 +4,14 @@ import * as Joi from "joi";
 import { Task } from "./task.model";
 import { User } from "./user.model";
 
-export const taskGetValidator: Joi.ObjectSchema< typeof Task> = Joi.object().keys({
+export const taskGetValidator: Joi.ObjectSchema<typeof Task> = Joi.object().keys({
   taskId: Joi.string().min(1).max(128).required()
 });
+
+export const userPostLoginValidator: Joi.ObjectSchema<typeof User> = Joi.object().keys({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).max(32).required(),
+})
 
 export const userPostValidator: Joi.ObjectSchema<typeof User> = Joi.object().keys({
       email: Joi.string().email().required(),
@@ -14,6 +19,14 @@ export const userPostValidator: Joi.ObjectSchema<typeof User> = Joi.object().key
       firstName: Joi.string().min(1).max(32).required(),
       lastName: Joi.string().min(1).max(32).required()
 })
+
+
+export const userGetQueryValidator: Joi.ObjectSchema<typeof User> = Joi.object().keys({
+  email: Joi.string().email(),
+  firstName: Joi.string().min(1).max(32),
+  lastName: Joi.string().min(1).max(32)
+});
+
 
 export const joiSchemas = {
   Task: {

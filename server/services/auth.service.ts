@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
-
+import { User } from '../models';
+import { IUser } from '../models/user.model'
 // import { Request, Response } from "express";
 
  export class AuthService {
@@ -10,20 +11,39 @@ import bcrypt from 'bcryptjs';
       }
 
      static hashPassword(password: string): string {
-        let genSalt: string;
+        let generSalt: string;
         let result: string;
 
         bcrypt.genSalt(10, function(err, salt) {
-          genSalt = salt;
+          //if(err) throw new Error(err);
+          generSalt = salt;
         });
 
-        bcrypt.hash(password, genSalt, function(err, hash) {
-            result = hash;
-          })
+
+        result = bcrypt.hashSync(password, generSalt);
 
         return result;
+      }
+
+     static async userLogin(email: string, password: string): Promise<IUser | string> {
+      let user: IUser = null;
+
+      try {
+        user = await User.findOne({email});
+      } catch(e) {
+        console.log(e);
+      }
+
+      if(!user) return 'User is not found.';
+
+      if(this.passwordComparison(password, user.password)) {
+        return user;
+      } else {
+        return 'Incorrect email or password.'
+      }
+
      }
- }
+}
 //
 //     public async login(req: Request, res: Response): Promise<any> {
 //         let {email, password} = req.body;
