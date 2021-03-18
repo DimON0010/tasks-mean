@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../../auth.service";
-import {HttpResponse} from "@angular/common/http";
+import { AuthService } from "../../auth.service";
+import { HttpResponse } from "@angular/common/http";
+import { IUser } from "../../models/user.model";
 
 @Component({
   selector: 'app-signup-page',
@@ -14,9 +15,9 @@ export class SignupPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  signupHandler(email: string, password: string) {
-    return this.authService.signup(email, password).subscribe((res: HttpResponse<any>) => {
-      console.log(res);
+  signupHandler(user: IUser) {
+    return this.authService.signup(user).subscribe((res: HttpResponse<any>) => {
+      console.log(res.body);
     })
   }
 

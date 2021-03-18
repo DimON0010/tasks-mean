@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../../auth.service";
 import {HttpResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {LocalStorageService} from "../../local-storage.service";
 
 @Component({
   selector: 'app-login-page',
@@ -11,16 +12,19 @@ import {Router} from "@angular/router";
 export class LoginPageComponent implements OnInit {
 
   constructor(private authService: AuthService,
-              private router: Router) { }
+              private router: Router,
+              ) { }
 
   ngOnInit(): void {
   }
 
   loginHandler(email: string, password: string) {
     this.authService.login(email, password).subscribe((res: HttpResponse<any>) => {
-      if(res.status === 200) {
-        this.router.navigate(['/lists']);
-      }
+       if(res.status === 200 && res.body) {
+         LocalStorageService.setAccessToken(res.body);
+         this.authService.setIsLoggedIn(true);
+         this.router.navigate(['/lists']);
+       }
     })
   }
 }

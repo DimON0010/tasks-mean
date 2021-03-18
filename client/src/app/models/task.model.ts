@@ -1,4 +1,4 @@
-export class Task {
+export interface ITask {
   _id: string;
   _listId: string;
   title: string;

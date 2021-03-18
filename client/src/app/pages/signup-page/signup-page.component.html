@@ -6,24 +6,40 @@
       <p class="control has-icons-left has-icons-right">
         <input #emailInput class="input has-background-light" type="email" placeholder="Email">
         <span class="icon is-small is-left">
-      <i class="fas fa-envelope"></i>
-    </span>
+          <i class="fas fa-envelope"></i>
+        </span>
         <span class="icon is-small is-right">
-      <i class="fas fa-check"></i>
-    </span>
+          <i class="fas fa-check"></i>
+        </span>
       </p>
     </div>
     <div class="field">
       <p class="control has-icons-left">
         <input #passwordInput class="input has-background-light" type="password" placeholder="Password">
         <span class="icon is-small is-left">
-      <i class="fas fa-lock"></i>
-    </span>
+          <i class="fas fa-lock"></i>
+        </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input #firstNameInput class="input has-background-light" type="string" placeholder="First Name">
+        <span class="icon is-small is-left">
+          <i class="fa fa-user-circle-o"></i>
+        </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control has-icons-left">
+        <input #lastNameInput class="input has-background-light" type="string" placeholder="Last Name">
+        <span class="icon is-small is-left">
+          <i class="fa fa-user-circle-o"></i>
+        </span>
       </p>
     </div>
     <div class="field is-pulled-right" style="display: flex; align-items: flex-end">
       <p class="control">
-        <button class="button is-success has-text-white" (click)="signupHandler(emailInput.value, passwordInput.value)">
+        <button class="button is-success has-text-white" (click)="signupHandler({ email: emailInput.value, password: passwordInput.value, firstName: firstNameInput.value, lastName: lastNameInput.value })">
           Sign up
         </button>
       </p>

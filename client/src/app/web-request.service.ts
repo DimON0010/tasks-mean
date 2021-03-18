@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { IUser } from './models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class WebRequestService {
   }
 
   login(email: string, password: string) {
-    return this.http.post(`${this.ROOT_URL}/users/login`, {
+    return this.http.post(`${this.ROOT_URL}/api/users/login`, {
       email,
       password
     }, {
@@ -36,12 +37,15 @@ export class WebRequestService {
     });
   }
 
-  signup(email: string, password: string) {
-    return this.http.post(`${this.ROOT_URL}/users`, {
-      email,
-      password
+  signup(user: IUser) {
+    return this.http.post(`${this.ROOT_URL}/api/users`, {
+      ...user
     }, {
       observe: 'response'
     });
+  }
+
+  currentUser() {
+    return this.http.get(`${this.ROOT_URL}/api/users/current`)
   }
 }

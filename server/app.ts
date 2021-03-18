@@ -3,7 +3,7 @@ import * as bodyParser  from "body-parser";
 import mongoose from "mongoose";
 import routes from "./routes";
 import dotenv from "dotenv";
-import * as cors from 'cors';
+import cors from 'cors';
 
 console.clear();
 dotenv.config();
@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 // CORS
 // const cors = require('cors');
 //app.options('*', cors());
-// app.use('*', cors());
+app.use(cors());
 
 app.use("/api", routes);
 

@@ -1,7 +1,9 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models';
-import { IUser } from '../models/user.model'
-// import { Request, Response } from "express";
+import { IUser } from '../models/user.model';
+import { encode, TAlgorithm, decode } from 'jwt-simple';
+import { PartialSession, EncodeResult, Session, DecodeResult, ExpirationStatus } from '../models/jwt.model';
+
 
  export class AuthService {
      constructor() { }
@@ -25,7 +27,7 @@ import { IUser } from '../models/user.model'
         return result;
       }
 
-     static async userLogin(email: string, password: string): Promise<IUser | string> {
+     static async userLogin(email: string, password: string): Promise<IUser> {
       let user: IUser = null;
 
       try {
@@ -34,15 +36,93 @@ import { IUser } from '../models/user.model'
         console.log(e);
       }
 
-      if(!user) return 'User is not found.';
+      if(!user) return null;
 
       if(this.passwordComparison(password, user.password)) {
         return user;
       } else {
-        return 'Incorrect email or password.'
+        return null
       }
 
      }
+
+     static createJWT(secretKey: string, partialSession: PartialSession): EncodeResult {
+      // Always use HS512 to sign the token
+      const algorithm: TAlgorithm = "HS512";
+      // Determine when the token should expire
+      const issued = Date.now();
+      const fifteenMinutesInMs = 15 * 60 * 1000;
+      const expires = issued + fifteenMinutesInMs;
+      const session: Session = {
+          ...partialSession,
+          issued: issued,
+          expires: expires
+      };
+
+      return {
+          token: encode(session, secretKey, algorithm),
+          issued: issued,
+          expires: expires
+      };
+  }
+
+    static decodeSession(secretKey: string, tokenString: string): DecodeResult {
+      // Always use HS512 to decode the token
+      const algorithm: TAlgorithm = "HS512";
+
+      let result: Session;
+
+      try {
+          result = decode(
+            tokenString,
+            //sessionToken,
+            secretKey, false, algorithm);
+      } catch (_e) {
+          const e: Error = _e;
+
+          // These error strings can be found here:
+          // https://github.com/hokaccha/node-jwt-simple/blob/c58bfe5e5bb049015fcd55be5fc1b2d5c652dbcd/lib/jwt.js
+          if (e.message === "No token supplied" || e.message === "Not enough or too many segments") {
+              return {
+                  type: "invalid-token"
+              };
+          }
+
+          if (e.message === "Signature verification failed" || e.message === "Algorithm not supported") {
+              return {
+                  type: "integrity-error"
+              };
+          }
+
+          // Handle json parse errors, thrown when the payload is nonsense
+          if (e.message.indexOf("Unexpected token") === 0) {
+              return {
+                  type: "invalid-token"
+              };
+          }
+
+          throw e;
+      }
+
+      return {
+          type: "valid",
+          session: result
+      }
+    }
+
+  static checkExpirationStatus(token: Session): ExpirationStatus {
+    const now = Date.now();
+
+    if (token.expires > now) return "active";
+
+    //Find the timestamp for the end of the token's grace period
+    const threeHoursInMs = 3 * 60 * 60 * 1000;
+    const threeHoursAfterExpiration = token.expires + threeHoursInMs;
+    if (threeHoursAfterExpiration > now) return "grace";
+
+    return "expired"
+  }
+
 }
 //
 //     public async login(req: Request, res: Response): Promise<any> {

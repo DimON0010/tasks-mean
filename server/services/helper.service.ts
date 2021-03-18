@@ -12,6 +12,7 @@ export class HelperService {
     //         _listId
     //     })
     // }
+
     // authenticate(req: Request, res: Response, next: NextFunction) {
     //     let token = req.headers['x-access-token'];
     //     jwt.verify(token, User.getJWTSecret(), (err: Error, decoded: Object) => {
