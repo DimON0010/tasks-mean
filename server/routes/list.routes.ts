@@ -1,28 +1,46 @@
-import {Request, Response, Router} from "express";
-import {ListController} from "../controllers/list.controller";
-import {joiMiddleware} from "../middleware";
-import {joiSchemas} from "../models";
+import { Request, Response, Router } from "express";
+import { ListController } from "../controllers/list.controller";
+import { TaskController } from "../controllers/task.controller";
+import { joiMiddleware, requireJwtMiddleware } from "../middleware";
+import { joiSchemas, listGetParamValidator, listGetTasksQueryValidator } from "../models";
+import { AuthService } from "../services/auth.service";
 
 const router = Router();
 const listController = new ListController();
+const taskController = new TaskController();
 
 router.get('/',
   joiMiddleware(joiSchemas.List.listQuery, 'query'),
+  // requireJwtMiddleware(),
   async (req: Request, res: Response) => {
     const result = await listController.read(req.query, req.params.listId);
     res.send(result);
   });
 
-router.get('/:listId',
-  joiMiddleware(joiSchemas.List.listParams, 'params'),
+router.get('/:_listId',
+  joiMiddleware(listGetParamValidator, 'params'),
+  joiMiddleware(listGetTasksQueryValidator, 'query'),
   async (req: Request, res: Response) => {
-    const result = await listController.read(req.query, req.params.listId);
+    if(req.query.withTasks && req.query.withTasks == 'true') {
+
+      const list = await listController.read(req.query, req.params._listId);
+      const tasks = await taskController.read(req.params);
+
+      res.send({list: list,
+                tasks: tasks
+              });
+      return;
+    }
+    const result = await listController.read(req.query, req.params._listId);
     res.send(result);
   });
 
 router.post('/',
   joiMiddleware(joiSchemas.List.listBody, 'body'),
+  requireJwtMiddleware(),
   async (req: Request, res: Response) => {
+    const tokenUser = AuthService.decodeSession(process.env.JWT_SECRET, req.header('X-JWT-Token'))
+    req.body = {_userId: tokenUser.session.id , ...req.body}
     const result = await listController.create(req.body);
     res.send(result);
   });

@@ -52,9 +52,10 @@ router.post('/login',
   router.get('/current',
     async (req: Request, res: Response) => {
 
-      const tokenUser = await AuthService.decodeSession(process.env.JWT_SECRET, req.header('X-JWT-Token'))
+      const tokenUser = AuthService.decodeSession(process.env.JWT_SECRET, req.header('X-JWT-Token'))
       if(tokenUser.type === 'valid') {
         res.send(ResponseService.successRes(tokenUser.session.userName));
+        return;
       }
       res.send(ResponseService.badRes("Incorrect token data."))
     }

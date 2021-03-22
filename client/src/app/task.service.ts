@@ -10,10 +10,10 @@ export class TaskService {
   constructor(private webRequestService: WebRequestService) { }
 
   getLists() {
-    return this.webRequestService.get('lists');
+    return this.webRequestService.get('api/lists');
   }
   createList(title: string) {
-    return this.webRequestService.post('lists', { title });
+    return this.webRequestService.post('api/lists', { title });
   }
   updateList(id: string, title: string) {
     return this.webRequestService.patch(`lists/${id}`, { title });
@@ -24,21 +24,21 @@ export class TaskService {
   }
 
   getTasks(listId: string) {
-    return this.webRequestService.get(`lists/${listId}/tasks`);
+    return this.webRequestService.get(`api/lists/${listId}`, 'withTasks=true');
   }
   createTask(title: string, listId: string) {
-    return this.webRequestService.post(`lists/${listId}/tasks`, { title });
+    return this.webRequestService.post(`api/tasks`, { title: title, _listId: listId, completed: false });
   }
   deleteTask(listId: string, taskId: string) {
-    return this.webRequestService.delete(`lists/${listId}/tasks/${taskId}`);
+    return this.webRequestService.delete(`api/tasks/${taskId}`);
   }
-  updateTask(listId: string, taskId: string, title: string) {
-    return this.webRequestService.patch(`lists/${listId}/tasks/${taskId}`, { title });
+  updateTask(taskId: string, title: string) {
+    return this.webRequestService.patch(`tasks/${taskId}`, { title });
   }
 
   complete(task: ITask) {
-    return this.webRequestService.patch(`lists/${task._listId}/tasks/${task._id}`, {
+    return this.webRequestService.patch(`api/tasks/${task._id}`, {
       completed: !task.completed
-    })
+    });
   }
 }

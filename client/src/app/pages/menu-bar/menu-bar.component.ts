@@ -11,7 +11,7 @@ import { IRes } from '../../models/response.model';
 
 export class MenuBarComponent {
 
-  constructor( private authService: AuthService) {
+  constructor(private authService: AuthService) {
 
   }
 
@@ -37,22 +37,21 @@ export class MenuBarComponent {
 
   ngOnInit() {
     this.authService.currentUser().subscribe((data: IRes) => {
-      console.log(data.data);
       this.userName = data.data;
-    })
 
       this.items = [
-          {
-              label: this.userName,
-              icon:'pi pi-fw pi-user',
-              items:[
-                  {
-                      label:'Log out',
-                      icon:'pi pi-fw pi-user-minus',
-
-                  }
-              ]
-          }
+        {
+          label: this.userName,
+          icon: 'pi pi-fw pi-user',
+          items: [
+            {
+              label: 'Log out',
+              icon: 'pi pi-fw pi-user-minus',
+              command: () => {this.authService.logout()},
+            }
+          ]
+        }
       ];
+    })
   }
 }

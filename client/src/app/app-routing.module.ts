@@ -10,13 +10,13 @@ import { EditTaskComponent } from "./pages/edit-task/edit-task.component";
 import { AuthGuard } from "./auth-guard.service";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/lists', pathMatch: 'full' },
   { path: 'new-list', component: NewListComponent, canActivate: [AuthGuard] },
   { path: 'edit-list/:listId', component: EditListComponent, canActivate: [AuthGuard] },
   { path: 'lists', component: TaskViewComponent, canActivate: [AuthGuard] },
   { path: 'lists/:listId', component: TaskViewComponent, canActivate: [AuthGuard] },
   { path: 'lists/:listId/new-task', component: NewTaskComponent, canActivate: [AuthGuard] },
-  { path: 'lists/:listId/edit-task/:taskId', component: EditTaskComponent, canActivate: [AuthGuard] },
+  { path: 'edit-task/:taskId', component: EditTaskComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginPageComponent },
   { path: 'signup', component: SignupPageComponent },
 ];

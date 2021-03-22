@@ -7,9 +7,11 @@
       </h1>
 
       <div class="list-menu">
-        <a class="list-menu-item" *ngFor="let list of lists" [routerLink]="['lists', list._id]"
+        <a class="list-menu-item" *ngFor="let list of lists"
            routerLinkActive="is-active">
-          <p>{{ list.title }}</p>
+          <p
+          (click)="onListClick(list._id)"
+          >{{ list.title }}</p>
         </a>
       </div>
 
@@ -33,7 +35,7 @@
             </div>
             <div class="dropdown-menu" id="dropdown-menu4" role="menu">
               <div class="dropdown-content">
-                <a [routerLink]="['edit-list', selectedListId]" class="dropdown-item">
+                <a [routerLink]="['edit-list']" class="dropdown-item">
                   Edit
                 </a>
                 <a (click)="deleteListHandler()" class="dropdown-item has-text-danger">
@@ -49,7 +51,7 @@
             <p>{{ task.title }}</p>
           </div>
           <div class="task-buttons">
-            <button class="button" [routerLink]="['/lists', selectedListId, 'edit-task', task._id]" ]>
+            <button class="button" (click)="taskDeleteHandler(task._id)" style="margin-left: 10px;">
               <div class="icon">
                 <i class="fas fa-edit"></i>
               </div>

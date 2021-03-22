@@ -1,4 +1,4 @@
-export interface Session {
+export type Session {
 id: string;
 dateCreated: string;
 userName: string;
@@ -17,16 +17,9 @@ export interface EncodeResult {
   issued: number
 }
 
-export type DecodeResult =
-  | {
-        type: "valid";
-        session: Session;
-    }
-  | {
-        type: "integrity-error";
-    }
-  | {
-        type: "invalid-token";
-    };
+export interface DecodeResult {
+  type: 'valid' | "integrity-error" | "invalid-token";
+  session?: Session;
+}
 
 export type ExpirationStatus = "expired" | "active" | "grace";

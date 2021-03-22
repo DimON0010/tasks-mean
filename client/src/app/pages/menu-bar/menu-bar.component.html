@@ -1,1 +1,1 @@
-<p-menubar [model]="items" userName = "userName">{{ userName }}</p-menubar>
+<p-menubar *ngIf="items && items[0] && items[0].label" [model]="items"></p-menubar>
