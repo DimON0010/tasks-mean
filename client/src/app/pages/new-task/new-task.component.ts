@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {TaskService} from "../../task.service";
-import {ActivatedRoute, Params, Router} from "@angular/router";
+import { TaskService } from "../../services/task.service";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { ITask } from '../../models/task.model';
 
 @Component({
@@ -23,8 +23,9 @@ export class NewTaskComponent implements OnInit {
   }
 
   createTask(title: string) {
-    return this.taskService.createTask(title, this.listId).subscribe((newTask: ITask) => {
-      this.router.navigate(['../'], { relativeTo: this.route })
-    });
+    return this.taskService.createTask(title, this.listId)
+    // .subscribe((newTask: ITask) => {
+      // this.router.navigate(['../'], { relativeTo: this.route })
+    // });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {TaskService} from "../../task.service";
+import { TaskService } from "../../services/task.service";
 import { Router } from '@angular/router';
 import { IList } from "../../models/list.model";
 
@@ -16,8 +16,9 @@ export class NewListComponent implements OnInit {
   }
 
   createList(title: string) {
-    this.taskService.createList(title).subscribe((list: IList) => {
-      this.router.navigate(['lists'])
-    })
+    this.taskService.createList(title);
+    // .subscribe((list: IList) => {
+      // this.router.navigate(['lists'])
+    // })
   }
 }

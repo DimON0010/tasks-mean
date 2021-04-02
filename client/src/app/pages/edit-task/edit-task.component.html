@@ -4,7 +4,8 @@
       Edit a task
     </h1>
 
-    <input #taskInput class="input has-background-light is-medium" type="text" placeholder="Edit the task">
+    <input #taskInput class="input has-background-light is-medium"
+    [ngModel]="taskTitle" type="text" placeholder="Edit the task">
     <br><br>
     <div class="buttons is-right">
       <button class="button is-medium" routerLink="/">Cancel</button>

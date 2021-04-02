@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../../auth.service";
-import { HttpResponse } from "@angular/common/http";
+import { AuthService } from "../../services/auth.service";
 import { IUser } from "../../models/user.model";
 
 @Component({
@@ -16,9 +15,10 @@ export class SignupPageComponent implements OnInit {
   }
 
   signupHandler(user: IUser) {
-    return this.authService.signup(user).subscribe((res: HttpResponse<any>) => {
-      console.log(res.body);
-    })
+    return this.authService.signup(user)
+    // .subscribe((res: HttpResponse<any>) => {
+      // console.log(res.body);
+    // })
   }
 
 }

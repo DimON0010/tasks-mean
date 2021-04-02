@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { AuthService } from 'src/app/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { IRes } from '../../models/response.model';
 
 @Component({
@@ -36,22 +36,23 @@ export class MenuBarComponent {
   // }
 
   ngOnInit() {
-    this.authService.currentUser().subscribe((data: IRes) => {
-      this.userName = data.data;
+    this.authService.currentUser();
+    // .subscribe((data: IRes) => {
+    //   this.userName = data.data;
 
-      this.items = [
-        {
-          label: this.userName,
-          icon: 'pi pi-fw pi-user',
-          items: [
-            {
-              label: 'Log out',
-              icon: 'pi pi-fw pi-user-minus',
-              command: () => {this.authService.logout()},
-            }
-          ]
-        }
-      ];
-    })
+    //   this.items = [
+    //     {
+    //       label: this.userName,
+    //       icon: 'pi pi-fw pi-user',
+    //       items: [
+    //         {
+    //           label: 'Log out',
+    //           icon: 'pi pi-fw pi-user-minus',
+    //           command: () => {this.authService.logout()},
+    //         }
+    //       ]
+    //     }
+    //   ];
+    // })
   }
 }

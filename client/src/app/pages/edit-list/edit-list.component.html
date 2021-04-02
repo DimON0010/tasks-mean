@@ -4,7 +4,10 @@
       Edit a list
     </h1>
 
-    <input #listInput class="input has-background-light is-medium" type="text" placeholder="Enter the list name">
+    <input #listInput class="input has-background-light is-medium"
+           type="text"
+           placeholder="Enter the list name"
+           [(ngModel)]="listTitle">
     <br><br>
     <div class="buttons is-right">
       <button class="button is-medium" routerLink="/">Cancel</button>

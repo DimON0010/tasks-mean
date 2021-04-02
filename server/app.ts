@@ -7,6 +7,7 @@ import cors from 'cors';
 
 console.clear();
 dotenv.config();
+
 const app = express();
 /* Resolving POST, PUT, DELETE */
 app.use(bodyParser.urlencoded({ extended: true }));

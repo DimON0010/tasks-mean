@@ -27,6 +27,7 @@
   flex-direction: column;
   flex-grow: 1;
   padding: 42px;
+  overflow: hidden;
 
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -41,13 +42,33 @@
   }
 }
 
-.list-menu {
+.task-container {
+  max-height: 70%;
+  // max-height: 540px;
   display: flex;
   flex-direction: column;
   margin-top: 15px;
   flex-grow: 1;
 
+        white-space: nowrap; /* Запрещаем перенос строк */
+        overflow: hidden; /* Обрезаем все, что не помещается в область */
+        text-overflow: ellipsis; /* Добавляем многоточие */
+        overflow-y: scroll;
+}
+
+.list-menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  flex-grow: 1;
+  overflow-y: scroll;
+
     .list-menu-item {
+      p {
+        white-space: nowrap; /* Запрещаем перенос строк */
+        overflow: hidden; /* Обрезаем все, что не помещается в область */
+        text-overflow: ellipsis; /* Добавляем многоточие */
+      }
       display: flex;
 
       align-items: center;

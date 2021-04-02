@@ -21,6 +21,7 @@ router.get('/:_listId',
   joiMiddleware(listGetParamValidator, 'params'),
   joiMiddleware(listGetTasksQueryValidator, 'query'),
   async (req: Request, res: Response) => {
+    console.log('it is me, Mario', req.query);
     if(req.query.withTasks && req.query.withTasks == 'true') {
 
       const list = await listController.read(req.query, req.params._listId);

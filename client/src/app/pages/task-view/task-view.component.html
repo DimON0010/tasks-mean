@@ -7,11 +7,8 @@
       </h1>
 
       <div class="list-menu">
-        <a class="list-menu-item" *ngFor="let list of lists"
-           routerLinkActive="is-active">
-          <p
-          (click)="onListClick(list._id)"
-          >{{ list.title }}</p>
+        <a class="list-menu-item" *ngFor="let list of lists" routerLinkActive="is-active">
+          <p (click)="onListClick(list._id)" class="listTitle" title={{list.title}}>{{ list.title }}</p>
         </a>
       </div>
 
@@ -29,13 +26,13 @@
               <button class="button" aria-haspopup="true">
                 <span>Hover me</span>
                 <span class="icon is-small">
-        <i class="fas fa-cog" aria-hidden="true"></i>
-      </span>
+                  <i class="fas fa-cog" aria-hidden="true"></i>
+                </span>
               </button>
             </div>
             <div class="dropdown-menu" id="dropdown-menu4" role="menu">
               <div class="dropdown-content">
-                <a [routerLink]="['edit-list']" class="dropdown-item">
+                <a (click)="listUpdateHandler()" [routerLink]="['edit-list']" class="dropdown-item">
                   Edit
                 </a>
                 <a (click)="deleteListHandler()" class="dropdown-item has-text-danger">
@@ -45,22 +42,24 @@
             </div>
           </div>
         </div>
-        <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)"
-             [ngClass]="{ 'completed': task.completed }">
-          <div class="task-text">
-            <p>{{ task.title }}</p>
-          </div>
-          <div class="task-buttons">
-            <button class="button" (click)="taskDeleteHandler(task._id)" style="margin-left: 10px;">
-              <div class="icon">
-                <i class="fas fa-edit"></i>
-              </div>
-              <button class="button is-danger" (click)="taskDeleteHandler(task._id)" style="margin-left: 10px;">
+        <div class="task-container">
+          <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)"
+            [ngClass]="{ 'completed': task.completed }">
+            <div class="task-text">
+              <p>{{ task.title }}</p>
+            </div>
+            <div class="task-buttons">
+              <button class="button" (click)="taskUpdateHandler(task._id)" style="margin-left: 10px;">
                 <div class="icon">
-                  <i class="fas fa-trash"></i>
-              </div>
+                  <i class="fas fa-edit"></i>
+                </div>
+                <button class="button is-danger" (click)="taskDeleteHandler(task._id)" style="margin-left: 10px;">
+                  <div class="icon">
+                    <i class="fas fa-trash"></i>
+                  </div>
+                </button>
               </button>
-            </button>
+            </div>
           </div>
         </div>
 
@@ -68,7 +67,7 @@
           a new task.</h3>
 
         <button routerLink="./new-task" class="circle-add-button is-primary">
-          <img src="../../../assets/plus-icon.svg"/>
+          <img src="../../../assets/plus-icon.svg" />
         </button>
       </div>
       <div *ngIf="!tasks">

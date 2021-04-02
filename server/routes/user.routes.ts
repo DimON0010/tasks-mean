@@ -34,7 +34,7 @@ router.post('/login',
 
     const user = await AuthService.userLogin(req.body.email, req.body.password);
     if (user === null) {
-      res.send(ResponseService.badRes('Invalid user data.'));
+      res.status(400).send(ResponseService.badRes('Invalid user data.'));
     } else {
 
       const userFullName = user.firstName + ' ' + user.lastName;
