@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WebRequestService } from './web-request.service';
 import { ITask } from './../models/task.model';
+import { AxiosResponse } from 'axios';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class TaskService {
   getTasks(listId: string) {
     return this.webRequestService.get(`api/lists/${listId}`, { withTasks: 'true'});
   }
-  createTask(title: string, listId: string) {
+  async createTask(title: string, listId: string): Promise<AxiosResponse<any>> {
     return this.webRequestService.post(`api/tasks`, { title: title, _listId: listId, completed: false });
   }
   deleteTask(listId: string, taskId: string) {

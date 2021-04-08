@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { UserController } from "../controllers/user.controller";
 import { AuthService } from "../services/auth.service";
-import { joiMiddleware } from "../middleware";
+import { joiMiddleware, requireJwtMiddleware } from "../middleware";
 import { userPostValidator, userGetQueryValidator, userPostLoginValidator } from "../models/joiSchemas";
 import { ResponseService } from "../services/response.service";
 
@@ -50,9 +50,10 @@ router.post('/login',
   },
 
   router.get('/current',
+    requireJwtMiddleware(),
     async (req: Request, res: Response) => {
+      const tokenUser = AuthService.decodeSession(process.env.JWT_SECRET, req.header('X-JWT-Token'));
 
-      const tokenUser = AuthService.decodeSession(process.env.JWT_SECRET, req.header('X-JWT-Token'))
       if(tokenUser.type === 'valid') {
         res.send(ResponseService.successRes(tokenUser.session.userName));
         return;

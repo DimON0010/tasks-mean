@@ -25,31 +25,27 @@ export class TaskViewComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
 
-    await this.taskService.getLists().then(response => {
-      this.lists = response.data; });
-
-    this.route.params.subscribe((params: Params) => {
-      if (params.listId) {
-        this.selectedListId = params.listId;
-        if ( !this.selectedListId || this.selectedListId !== params.listId) {
-          this.onListClick(params.listId);
-        }
-      }
-    });
+    const listId = this.route.snapshot.paramMap.get('listId');
+    if (listId && this.selectedListId !== listId) {
+      this.selectedListId = listId;
+      this.taskService.getLists().then(response => {
+        this.lists = response?.data;
+      });
+      this.onListClick(listId);
+    } else {
+      this.taskService.getLists().then(response => {
+        this.lists = response?.data;
+      });
+    }
   }
 
   async onListClick(listId: string): Promise<void> {
-      await this.taskService.getTasks(listId).then(response => {
-        console.log('getTasks() response: ', response.data);
-        if (response.data?.tasks) { console.log(response.data?.tasks); }
-        this.router.navigate(['lists/', listId]);
-      });
-    // .subscribe((data: {list: IList, tasks: ITask[]}) => {
-    //  this.tasks = data.tasks;
-    //
-    // });
+    await this.taskService.getTasks(listId).then(response => {
+      if (response?.data?.list?.tasks) { this.tasks = response?.data?.list?.tasks; }
+      this.router.navigate(['lists/', listId]);
+    });
   }
 
   taskUpdateHandler(taskId: string) {
@@ -60,24 +56,25 @@ export class TaskViewComponent implements OnInit {
     this.router.navigate(['edit-list/', this.selectedListId]);
   }
 
-  onTaskClick(task: ITask) {
-    this.taskService.complete(task)
-    // .subscribe(() => {
-      // task.completed = !task.completed
-    // });
+  async onTaskClick(task: ITask) {
+    await this.taskService.complete(task).then(response => { if (response?.status === 200) {
+      task.completed = !task.completed;
+    }});
   }
 
-  deleteListHandler() {
-    this.taskService.deleteList(this.selectedListId)
-    // .subscribe(() => {
-      // this.router.navigate(['lists']);
-    // })
+  async deleteListHandler() {
+    await this.taskService.deleteList(this.selectedListId).then(data => {
+      if (data?.status === 200) {
+        this.router.navigate(['lists']);
+      }
+    });
   }
 
-  taskDeleteHandler(id: string) {
-    this.taskService.deleteTask(this.selectedListId, id)
-    // .subscribe((res: any) => {
-      // this.tasks = this.tasks.filter(v => v._id !== id);
-    // })
+  async taskDeleteHandler(id: string) {
+    await this.taskService.deleteTask(this.selectedListId, id).then(data => {
+      if (data?.status === 200) {
+        this.tasks = this.tasks.filter(v => v._id !== id);
+      }
+    });
   }
 }

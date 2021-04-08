@@ -1,5 +1,9 @@
 @import '../../../main-styles';
 
+.centered-content {
+  height: calc(100% - 58px);
+}
+
 .task-manager-container{
   display: flex;
   width: 100%;
@@ -43,8 +47,8 @@
 }
 
 .task-container {
-  max-height: 70%;
-  // max-height: 540px;
+  // background: #888;
+  max-height: 400px;
   display: flex;
   flex-direction: column;
   margin-top: 15px;
@@ -94,7 +98,7 @@
   background: white;
   padding: 15px 20px;
   border-radius: 5px;
-  margin-top: 10px;
+  margin: 5px;
 
   align-items: center;
 
@@ -129,14 +133,10 @@
   }
 }
 
-.circle-add-button {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  bottom: 35px;
-  right: 35px;
-
-  border-radius: 50%;
+.new-task-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
 .empty-state-text {

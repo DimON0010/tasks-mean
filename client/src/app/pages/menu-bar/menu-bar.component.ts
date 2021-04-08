@@ -35,24 +35,24 @@ export class MenuBarComponent {
   //   this.userName = uName;
   // }
 
-  ngOnInit() {
-    this.authService.currentUser();
-    // .subscribe((data: IRes) => {
-    //   this.userName = data.data;
+  async ngOnInit() {
+    const userData = await this.authService.currentUser();
+    if (!!userData && userData.data) {
+      this.userName = userData.data.data;
+    }
 
-    //   this.items = [
-    //     {
-    //       label: this.userName,
-    //       icon: 'pi pi-fw pi-user',
-    //       items: [
-    //         {
-    //           label: 'Log out',
-    //           icon: 'pi pi-fw pi-user-minus',
-    //           command: () => {this.authService.logout()},
-    //         }
-    //       ]
-    //     }
-    //   ];
-    // })
+    this.items = [
+      {
+        label: this.userName,
+        icon: 'pi pi-fw pi-user',
+        items: [
+          {
+            label: 'Log out',
+            icon: 'pi pi-fw pi-user-minus',
+            command: () => { this.authService.logout(); },
+          }
+        ]
+      }
+    ];
   }
 }

@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   signup(user: IUser) {
-    return this.webService.signup(user)
+    return this.webService.signup(user);
     // .pipe(
       // shareReplay(),
       // tap((res: HttpResponse<any>) => {

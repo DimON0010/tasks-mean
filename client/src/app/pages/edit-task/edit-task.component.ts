@@ -9,33 +9,29 @@ import { TaskService } from "../../services/task.service";
   styleUrls: ['./edit-task.component.scss']
 })
 export class EditTaskComponent implements OnInit {
-
-  taskId: string;
+  currentTaskId: string;
   taskTitle: string;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private taskService: TaskService,
     private router: Router) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
-      if (params.taskId) {
-        this.taskId = params.taskId;
-      }
-
-    })
-    if (this.taskId) {
-      this.taskService.getTask(this.taskId);
-      // .subscribe(
-      //   (task: ITask) => this.taskTitle = task.title);
+    const taskId = this.route.snapshot.paramMap.get('taskId');
+    if (taskId) {
+      this.currentTaskId = taskId;
+      this.taskService.getTask(taskId).then(data => this.taskTitle = data.data.title);
     }
   }
 
-  updateTask(title: string) {
-    this.taskService.updateTask(this.taskId, title);
-    // .subscribe(() => {
-      // this.router.navigate(['lists'])
-    // })
+  updateTask(title: string): void {
+    this.taskService.updateTask(this.currentTaskId, title).then(data => {
+      if (data?.status === 200) {
+        this.router.navigate(['../']);
+        // this.router.navigate(['lists']);
+      }
+    });
   }
 
 }

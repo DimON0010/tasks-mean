@@ -11,7 +11,7 @@ export const joiMiddleware = (schema: Joi.Schema, property: 'query' | 'params' |
     else {
       const { details } = error;
       const message = details.map((i: any ) => i.message).join(', ');
-      console.log("error", message);
+      
       res.status(422).json({error: message});
     }
   }

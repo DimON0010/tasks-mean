@@ -2,7 +2,8 @@ import { Request, Response, Router } from "express";
 import { ListController } from "../controllers/list.controller";
 import { TaskController } from "../controllers/task.controller";
 import { joiMiddleware, requireJwtMiddleware } from "../middleware";
-import { joiSchemas, listGetParamValidator, listGetTasksQueryValidator } from "../models";
+import { joiSchemas, listGetParamValidator, listGetTasksQueryValidator,
+         listDeleteParamsValidator, listPostBodyValidator, listGetQueryValidator } from "../models";
 import { AuthService } from "../services/auth.service";
 
 const router = Router();
@@ -10,25 +11,29 @@ const listController = new ListController();
 const taskController = new TaskController();
 
 router.get('/',
-  joiMiddleware(joiSchemas.List.listQuery, 'query'),
-  // requireJwtMiddleware(),
+  joiMiddleware(listGetQueryValidator, 'query'),
+  requireJwtMiddleware(),
   async (req: Request, res: Response) => {
-    const result = await listController.read(req.query, req.params.listId);
+
+    const tokenUser = AuthService.decodeSession(process.env.JWT_SECRET, req.header('X-JWT-Token'));
+    const result = await listController.read({_userId: tokenUser?.session?.id }, req.params.listId);
+
     res.send(result);
   });
 
 router.get('/:_listId',
   joiMiddleware(listGetParamValidator, 'params'),
   joiMiddleware(listGetTasksQueryValidator, 'query'),
+  requireJwtMiddleware(),
   async (req: Request, res: Response) => {
-    console.log('it is me, Mario', req.query);
-    if(req.query.withTasks && req.query.withTasks == 'true') {
+    if(req.query?.withTasks && req.query?.withTasks === 'true') {
 
       const list = await listController.read(req.query, req.params._listId);
       const tasks = await taskController.read(req.params);
 
-      res.send({list: list,
-                tasks: tasks
+      res.send({list: {list,
+                       tasks: tasks
+                      },
               });
       return;
     }
@@ -37,11 +42,11 @@ router.get('/:_listId',
   });
 
 router.post('/',
-  joiMiddleware(joiSchemas.List.listBody, 'body'),
+  joiMiddleware(listPostBodyValidator, 'body'),
   requireJwtMiddleware(),
   async (req: Request, res: Response) => {
     const tokenUser = AuthService.decodeSession(process.env.JWT_SECRET, req.header('X-JWT-Token'))
-    req.body = {_userId: tokenUser.session.id , ...req.body}
+    req.body = {_userId: tokenUser?.session?.id , ...req.body}
     const result = await listController.create(req.body);
     res.send(result);
   });
@@ -55,7 +60,7 @@ router.patch('/:listId',
   });
 
 router.delete('/:listId',
-  joiMiddleware(joiSchemas.List.listParams, 'params'),
+  joiMiddleware(listDeleteParamsValidator, 'params'),
   async (req: Request, res: Response) => {
     const result = await listController.delete(req.params.listId);
     res.send(result);

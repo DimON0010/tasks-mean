@@ -38,6 +38,5 @@ mongoose.connect(dbUrl, {
     console.log('App is listened on port 3000! ')
   });
 }).catch((e) => {
-  console.log(e);
-  console.log('DATABASE ERROR');
+  console.error(e);
 });

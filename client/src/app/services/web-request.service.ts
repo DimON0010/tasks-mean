@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { IUser } from './../models/user.model';
 import { IToken } from '../models/token.model';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,29 +14,47 @@ export class WebRequestService {
 
   constructor() {
     this.ROOT_URL = 'http://localhost:3000';
+    this.axiosInstance.interceptors.request.use(
+      successfulReq => {
+        const userToken = LocalStorageService.getAccessToken();
+        if (!!userToken && userToken.token) {
+          successfulReq.headers['X-JWT-Token'] = userToken.token;
+        }
+        return successfulReq;
+      },
+      error => {
+        return Promise.reject(error);
+      }
+    );
   }
 
   async get(uri: string, queryParams?: { [key: string]: string }): Promise<any> {
     try {
       let result: any;
       if (queryParams) {
-                result = await this.axiosInstance.get(`${this.ROOT_URL}/${uri}`, {
-                  params: queryParams
-            });
+        result = await this.axiosInstance.get(`${this.ROOT_URL}/${uri}`, {
+          params: queryParams
+        });
+      } else {
+        result = await this.axiosInstance.get(`${this.ROOT_URL}/${uri}`);
       }
-      result = await this.axiosInstance.get(`${this.ROOT_URL}/${uri}`);
       return result;
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
   }
 
-  async post(uri: string, payload: object) {
+  // TODO: add generic type
+  async post(uri: string, payload: object): Promise<any> {
     try {
-      return this.axiosInstance.post(`${this.ROOT_URL}/${uri}`, payload);
-    } catch (e) {
-      console.log(e);
+      let result;
+      return await this.axiosInstance.post(`${this.ROOT_URL}/${uri}`, payload).
+        then(data => result = data).
+        catch(error => console.error(error));
+    } catch (error) {
+      console.error('fuckingPostError: ', error);
+      return null;
     }
   }
 
@@ -43,7 +62,7 @@ export class WebRequestService {
     try {
       return await this.axiosInstance.patch(`${this.ROOT_URL}/${uri}`, payload);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -51,21 +70,20 @@ export class WebRequestService {
     try {
       return await this.axiosInstance.delete(`${this.ROOT_URL}/${uri}`);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string): Promise<any> {
     try {
       const result = await this.axiosInstance.post(`${this.ROOT_URL}/api/users/login`, {
         email,
         password
       });
       return result;
-      // .then(response => response)
-      // .catch(error => console.log(error));
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      return e;
     }
   }
 
@@ -75,15 +93,16 @@ export class WebRequestService {
         ...user
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      return e;
     }
   }
 
   async currentUser() {
     try {
-      return await this.axiosInstance.get(`${this.ROOT_URL}/api/users/current`)
+      return await this.axiosInstance.get(`${this.ROOT_URL}/api/users/current`);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 }

@@ -12,8 +12,8 @@
     "build:client": "cd ./client && npm run build",
     "build:server": "tsc --project tsconfig.json",
     "dev": "npm run build:client && npm run nodemon",
-    "node_modules": "npm i && cd ./client && npm i",
-    "nodemoff": "kill -9 $(lsof -i :3000) &>/dev/null | exit 0"
+    "node-modules": "npm i && cd ./client && npm i",
+    "node-kill": "kill -9 $(lsof -i :3000) &>/dev/null | exit 0"
   },
   "repository": {
     "type": "git",

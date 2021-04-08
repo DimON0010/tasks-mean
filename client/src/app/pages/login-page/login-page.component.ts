@@ -13,28 +13,56 @@ import { IToken } from 'src/app/models/token.model';
 })
 export class LoginPageComponent implements OnInit {
 
-  error: string = null;
+  inputError: string = null;
 
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
   }
 
-  async loginHandler(email: string, password: string) {
+  async loginHandler(email: string, password: string): Promise<void> {
+    if (!this.validate(email, password)) {
+      return;
+    }
     const response = await this.authService.login(email, password);
 
-    if (response?.status === 200 && response?.data?.token) {
+    if (response?.status === 200 && response.data?.token) {
+      this.inputError = null;
+
       LocalStorageService.setAccessToken(response.data);
       this.authService.isLoggedIn = true;
       this.router.navigate(['/lists']);
     } else {
-      console.log('loginHandle error');
-
-      // if (response?.data?.message) {
-      //   this.error = res.body.message;
-      // }
+      console.error('loginHandle error');
+      this.inputError = response && response.message;
     }
+  }
+
+  private validate(email: string, password: string): boolean {
+    let result = false;
+    const validEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+    switch (true) {
+      case email.trim().length === 0:
+        this.inputError = 'Email is empty';
+        break;
+      case !validEmail.test(email):
+        this.inputError = 'Email is not valid';
+        break;
+      case password.trim().length === 0:
+        this.inputError = 'Password is empty';
+        break;
+      case password.length < 8:
+        this.inputError = 'Password is too short. Should be at least 8 symbols.';
+        break;
+      default:
+        result = true;
+        this.inputError = null;
+        break;
+    }
+    return result;
   }
 }

@@ -10,30 +10,24 @@ import { TaskService } from "../../services/task.service";
 })
 export class EditListComponent implements OnInit {
 
-  listId: string;
+  currentListId: string;
   listTitle: string;
 
   constructor(private route: ActivatedRoute,
               private taskService: TaskService,
               private router: Router) { }
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
-      if (params.listId) {
-        this.listId = params.listId;
-      }
-
-    });
-    if (this.listId) {
-      console.log( this.taskService.getList(this.listId));
-      // subscribe((list: IList) => this.listTitle = list.title);
+  async ngOnInit(): Promise<void> {
+    const listId = this.route.snapshot.paramMap.get('listId');
+    if (listId) {
+      this.currentListId = listId;
+      await this.taskService.getList(listId).then(data => this.listTitle = data.data.title);
     }
   }
 
   updateList(title: string): void {
-    this.taskService.updateList(this.listId, this.listTitle);
-    // .subscribe(() => {
-    //   this.router.navigate(['lists', this.listId]);
-    // });
+    this.taskService.updateList(this.currentListId, this.listTitle).then(data => {
+      this.router.navigate(['lists', this.currentListId]);
+    });
   }
 }

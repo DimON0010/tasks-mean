@@ -56,6 +56,18 @@ export const taskDeleteParamsValidator: Joi.ObjectSchema<typeof Task> = Joi.obje
   taskId: Joi.string().length(24).required()
 });
 
+export const listDeleteParamsValidator: Joi.ObjectSchema<typeof Task> = Joi.object({
+  listId: Joi.string().min(1).max(128).required()
+});
+
+export const listPostBodyValidator: Joi.ObjectSchema<typeof Task> = Joi.object({
+  title: Joi.string().min(1).max(64).required(),
+});
+
+export const listGetQueryValidator: Joi.ObjectSchema<typeof Task> = Joi.object({
+  title: Joi.string().min(1).max(64)
+});
+
 export const joiSchemas = {
   Task: {
     taskParams: Joi.object().keys({

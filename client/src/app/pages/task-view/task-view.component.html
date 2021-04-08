@@ -1,4 +1,5 @@
 <app-menu-bar></app-menu-bar>
+
 <div class="centered-content">
   <div class="task-manager-container">
     <div class="sidebar has-background-white">
@@ -11,8 +12,14 @@
           <p (click)="onListClick(list._id)" class="listTitle" title={{list.title}}>{{ list.title }}</p>
         </a>
       </div>
-
-      <button class="button is-primary has-text-white" routerLink="/new-list">+ New List</button>
+      <div class="new-list-button">
+        <button class="button is-primary has-text-white linkButton" routerLink="/new-list">
+          <span>New List</span>
+          <span class="icon is-small">
+            <span class="fas fa-plus" aria-hidden="true"></span>
+          </span>
+        </button>
+      </div>
     </div>
 
     <div class="tasks-list-container has-background-light">
@@ -21,10 +28,11 @@
           <h1 class="title has-text-primary">
             Tasks
           </h1>
+
           <div class="dropdown is-hoverable is-right">
             <div class="dropdown-trigger">
               <button class="button" aria-haspopup="true">
-                <span>Hover me</span>
+                <span>List Settings</span>
                 <span class="icon is-small">
                   <i class="fas fa-cog" aria-hidden="true"></i>
                 </span>
@@ -41,7 +49,9 @@
               </div>
             </div>
           </div>
+
         </div>
+
         <div class="task-container">
           <div class="task" *ngFor="let task of tasks" (click)="onTaskClick(task)"
             [ngClass]="{ 'completed': task.completed }">
@@ -51,24 +61,30 @@
             <div class="task-buttons">
               <button class="button" (click)="taskUpdateHandler(task._id)" style="margin-left: 10px;">
                 <div class="icon">
-                  <i class="fas fa-edit"></i>
+                  <div class="fas fa-edit"></div>
                 </div>
-                <button class="button is-danger" (click)="taskDeleteHandler(task._id)" style="margin-left: 10px;">
-                  <div class="icon">
-                    <i class="fas fa-trash"></i>
-                  </div>
-                </button>
+              </button>
+              <button class="button is-danger" (click)="taskDeleteHandler(task._id)" style="margin-left: 10px;">
+                <div class="icon">
+                  <div class="fas fa-trash"></div>
+                </div>
               </button>
             </div>
           </div>
         </div>
 
-        <h3 class="empty-state-text" *ngIf="tasks.length === 0">There are no tasks here. Click the add button to create
-          a new task.</h3>
+        <h3 class="empty-state-text" *ngIf="tasks.length === 0">
+          There are no tasks here. Click the add button to create a new task.
+        </h3>
 
-        <button routerLink="./new-task" class="circle-add-button is-primary">
-          <img src="../../../assets/plus-icon.svg" />
-        </button>
+        <div class="new-task-button">
+          <button routerLink="./new-task" class="button is-primary has-text-white right" aria-haspopup="true">
+            <span>New Task</span>
+            <span class="icon is-small">
+              <i class="fas fa-plus" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
       </div>
       <div *ngIf="!tasks">
         <h3 class="empty-state-text">Please select a list from sidebar.</h3>

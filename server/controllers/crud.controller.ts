@@ -1,6 +1,7 @@
 import { Document, FilterQuery, Model } from 'mongoose';
 import { ParsedQs } from 'qs';
-import { Request } from "express";
+import { Request } from 'express';
+import { ITask } from '../models/task.model';
 
 
 export abstract class CrudController<I extends Document, T extends Model<I>> {
@@ -35,17 +36,17 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
     return result;
   }
 
-  public async update(id: string | ParsedQs | string[] | ParsedQs[] = null, data: Request["body"]): Promise<I> {
+  public async update(id: string | ParsedQs | string[] | ParsedQs[], data: Request["body"]): Promise<I> {
+    let result;
     try {
-      let result = await this._entity.findByIdAndUpdate({_id: id }, {...data}, {}, function(err, result) {
+      await this._entity.findByIdAndUpdate({_id: id }, {...data}, {}, function(err, result) {
         if (err) {
-          console.log(err);
-        } else {
-         console.log('Successfully updated!')
+          console.error(err);
         }
-      });
 
-      console.log('this is returned result: ' + result);
+      })
+
+
       //why do result returned to console, but not to the res.send()???
       return result;
     } catch (e) {

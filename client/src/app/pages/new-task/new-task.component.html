@@ -5,14 +5,14 @@
     </h1>
 
     <input #taskInput class="input has-background-light is-medium" type="text" placeholder="Enter the task">
-    <br><br>
+    <br>
+    <error-message-component [isActive]="inputError" [errorMessage]="inputError"></error-message-component>
+    <br>
     <div class="buttons is-right">
       <button class="button is-medium" routerLink="/">Cancel</button>
-      <a class="button is-info is-medium" (click)="createTask(taskInput.value)">
+      <button class="button is-info is-medium" (click)="createTask(taskInput.value)">
         Create
-      </a>
+      </button>
     </div>
-
-
   </div>
 </div>

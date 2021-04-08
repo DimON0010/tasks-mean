@@ -19,8 +19,6 @@ export class ErrorMessageComponent implements OnInit{
     }
 
     ngOnInit() {
-      console.log('here');
-
         this.primengConfig.ripple = true;
     }
 }
