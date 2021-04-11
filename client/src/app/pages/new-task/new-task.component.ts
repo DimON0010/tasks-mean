@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService } from "../../services/task.service";
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { TaskService } from '../../services/task.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ITask } from '../../models/task.model';
 import { AxiosResponse } from 'axios';
 

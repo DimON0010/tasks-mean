@@ -33,7 +33,6 @@ export class LoginPageComponent implements OnInit {
       this.inputError = null;
 
       LocalStorageService.setAccessToken(response.data);
-      this.authService.isLoggedIn = true;
       this.router.navigate(['/lists']);
     } else {
       console.error('loginHandle error');

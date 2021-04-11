@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../../services/auth.service";
-import { IUser } from "../../models/user.model";
+import { AuthService } from '../../services/auth.service';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { IUser } from '../../models/user.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,19 +28,19 @@ export class SignupPageComponent implements OnInit {
 
     const response = await this.authService.signup(user);
 
+    console.log(response);
 
     if (response?.status !== 200) {
       this.inputError = response?.message;
     } else {
+      LocalStorageService.setAccessToken(response.data);
       this.router.navigate(['/lists']);
     }
-
-    return response;
   }
 
   private validate(user: IUser): boolean {
     let result = false;
-    const validEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    const validEmail = /^(([^<>()[\]\.,;:\s@\']+(\.[^<>()[\]\.,;:\s@\']+)*)|(\'.+\'))@(([^<>()[\]\.,;:\s@\']+\.)+[^<>()[\]\.,;:\s@\']{2,})$/i;
 
     switch (true) {
       case user.email.trim().length === 0:

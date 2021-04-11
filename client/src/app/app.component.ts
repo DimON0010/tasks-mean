@@ -8,6 +8,7 @@ import { PrimeNGConfig } from 'primeng/api';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  title = 'client';
 
   constructor(private primengConfig: PrimeNGConfig, private router: Router) {}
 
@@ -15,5 +16,4 @@ export class AppComponent implements OnInit {
     this.primengConfig.ripple = true;
   }
 
-  title = 'client';
 }

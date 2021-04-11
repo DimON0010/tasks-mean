@@ -16,13 +16,13 @@ export class LocalStorageService {
     localStorage.setItem('X-JWT-Token', JSON.stringify(accessToken));
   }
 
-  private setSession(userId: string, accessToken: string, refreshToken: string) {
+  static removeSession(): void {
+    localStorage.removeItem('X-JWT-Token');
+  }
+
+  private setSession(userId: string, accessToken: string, refreshToken: string): void {
     localStorage.setItem('user-id', userId);
     localStorage.setItem('x-access-token', accessToken);
     localStorage.setItem('x-refresh-token', refreshToken);
   }
-  static removeSession() {
-    localStorage.removeItem('X-JWT-Token');
-  }
-
 }

@@ -1,9 +1,9 @@
-export type Session {
-id: string;
-dateCreated: string;
-userName: string;
-issued: number;
-expires: number;
+export interface Session {
+  id: string;
+  dateCreated: string;
+  userName: string;
+  issued: number;
+  expires: number;
 }
 
 /**

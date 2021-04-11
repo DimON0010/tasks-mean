@@ -18,11 +18,21 @@ app.use(bodyParser.json());
 //app.options('*', cors());
 app.use(cors());
 
+
+app.use('/', express.static(process.cwd()+"/client/dist/client") );
+
+app.use('*', (req: Request, res: Response) => {
+  // res.send('<div><p> Hello World </p></div>')
+  res.sendFile(process.cwd()+"/client/dist/client")
+});
+
 app.use("/api", routes);
 
-app.use(function(req: Request, res: Response) {
-   res.status(404).send('Sorry cant find that!');
-});
+
+
+// app.use(function(req: Request, res: Response) {
+//    res.status(404).send('Sorry cant find that!');
+// });
 
 const dbUrl = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@` +
   `${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;

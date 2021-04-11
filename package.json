@@ -8,12 +8,15 @@
     "nodemon": "nodemon server/app.ts",
     "docker": "sudo docker-compose up -d --build",
     "test": "ts-mocha ./tests/**/**.spec.ts",
-    "build": "npm run build:client && npm run build:server && cp -r ./client/dist/client ./build",
+    "build": "npm run build:client && npm run build:server && cp -r ./client/dist/client ./build/server",
     "build:client": "cd ./client && npm run build",
-    "build:server": "tsc --project tsconfig.json",
+    "build:server": "npm run test && tsc --project tsconfig.json",
+    "start": "node ./build/server/app.js",
+    "build-and-start": "npm build && npm start",
     "dev": "npm run build:client && npm run nodemon",
     "node-modules": "npm i && cd ./client && npm i",
-    "node-kill": "kill -9 $(lsof -i :3000) &>/dev/null | exit 0"
+    "node-off": "killall node",
+    "project-launch": "npm-run-all client docker nodemon"
   },
   "repository": {
     "type": "git",
@@ -50,7 +53,6 @@
   },
   "dependencies": {
     "@types/express-serve-static-core": "^4.17.17",
-    "@types/mongoose": "^5.10.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -62,6 +64,7 @@
     "lodash": "^4.17.20",
     "mongoose": "^5.11.12",
     "node": "^14.5.0",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "npm-run-all": "^4.1.5"
   }
 }

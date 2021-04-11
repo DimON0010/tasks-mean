@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ITask } from 'src/app/models/task.model';
-import { TaskService } from "../../services/task.service";
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'app-edit-task',
@@ -29,7 +29,6 @@ export class EditTaskComponent implements OnInit {
     this.taskService.updateTask(this.currentTaskId, title).then(data => {
       if (data?.status === 200) {
         this.router.navigate(['../']);
-        // this.router.navigate(['lists']);
       }
     });
   }

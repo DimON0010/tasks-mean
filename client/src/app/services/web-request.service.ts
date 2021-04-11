@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import axios, { AxiosResponse } from 'axios';
-import { HttpClient, HttpParams } from "@angular/common/http";
 import { IUser } from './../models/user.model';
 import { IToken } from '../models/token.model';
 import { LocalStorageService } from './local-storage.service';
@@ -28,47 +27,43 @@ export class WebRequestService {
     );
   }
 
-  async get(uri: string, queryParams?: { [key: string]: string }): Promise<any> {
+  async get<T>(uri: string, queryParams?: { [key: string]: string }): Promise<AxiosResponse<T>> {
     try {
-      let result: any;
+      let result: AxiosResponse<T>;
       if (queryParams) {
-        result = await this.axiosInstance.get(`${this.ROOT_URL}/${uri}`, {
+        result = await this.axiosInstance.get<T>(`${this.ROOT_URL}/${uri}`, {
           params: queryParams
         });
       } else {
-        result = await this.axiosInstance.get(`${this.ROOT_URL}/${uri}`);
+        result = await this.axiosInstance.get<T>(`${this.ROOT_URL}/${uri}`);
       }
       return result;
     } catch (e) {
       console.error(e);
     }
-
   }
 
   // TODO: add generic type
-  async post(uri: string, payload: object): Promise<any> {
+  async post<T>(uri: string, payload: T): Promise<AxiosResponse<T>> {
     try {
-      let result;
-      return await this.axiosInstance.post(`${this.ROOT_URL}/${uri}`, payload).
-        then(data => result = data).
-        catch(error => console.error(error));
+      return await this.axiosInstance.post<T>(`${this.ROOT_URL}/${uri}`, payload);
     } catch (error) {
-      console.error('fuckingPostError: ', error);
+      console.error('WebRequestService.post error: ', error);
       return null;
     }
   }
 
-  async patch(uri: string, payload: object) {
+  async patch<T>(uri: string, payload: T): Promise<AxiosResponse<T>> {
     try {
-      return await this.axiosInstance.patch(`${this.ROOT_URL}/${uri}`, payload);
+      return await this.axiosInstance.patch<T>(`${this.ROOT_URL}/${uri}`, payload);
     } catch (e) {
       console.error(e);
     }
   }
 
-  async delete(uri: string) {
+  async delete<T>(uri: string): Promise<AxiosResponse<T>> {
     try {
-      return await this.axiosInstance.delete(`${this.ROOT_URL}/${uri}`);
+      return await this.axiosInstance.delete<T>(`${this.ROOT_URL}/${uri}`);
     } catch (e) {
       console.error(e);
     }
@@ -87,7 +82,7 @@ export class WebRequestService {
     }
   }
 
-  async signup(user: IUser) {
+  async signup(user: IUser): Promise<any> {
     try {
       return await this.axiosInstance.post(`${this.ROOT_URL}/api/users`, {
         ...user
@@ -98,9 +93,9 @@ export class WebRequestService {
     }
   }
 
-  async currentUser() {
+  async currentUser(): Promise<AxiosResponse<IUser>> {
     try {
-      return await this.axiosInstance.get(`${this.ROOT_URL}/api/users/current`);
+      return await this.axiosInstance.get<IUser>(`${this.ROOT_URL}/api/users/current`);
     } catch (e) {
       console.error(e);
     }

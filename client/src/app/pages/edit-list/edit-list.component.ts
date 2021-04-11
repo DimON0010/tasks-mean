@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { IList } from 'src/app/models/list.model';
-import { TaskService } from "../../services/task.service";
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'app-edit-list',

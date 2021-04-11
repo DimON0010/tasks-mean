@@ -20,7 +20,7 @@ router.post('/',
   joiMiddleware(userPostValidator, "body"),
   async (req: Request, res: Response) => {
 
-    const result = await userController.create(
+    const result = await userController.signUp(
       { ...req.body, password: AuthService.hashPassword(req.body.password) }
     );
 
@@ -54,7 +54,7 @@ router.post('/login',
     async (req: Request, res: Response) => {
       const tokenUser = AuthService.decodeSession(process.env.JWT_SECRET, req.header('X-JWT-Token'));
 
-      if(tokenUser.type === 'valid') {
+      if (tokenUser.type === 'valid') {
         res.send(ResponseService.successRes(tokenUser.session.userName));
         return;
       }

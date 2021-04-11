@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Router } from "@angular/router";
-import { WebRequestService } from "./web-request.service";
-import { shareReplay, tap } from "rxjs/operators";
+import { Router } from '@angular/router';
+import { WebRequestService } from './web-request.service';
+import { shareReplay, tap } from 'rxjs/operators';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IUser } from '../models/user.model';
 import { LocalStorageService } from './local-storage.service';
+import { AxiosResponse } from 'axios';
 
 @Injectable({
   providedIn: 'root'
@@ -12,50 +13,26 @@ import { LocalStorageService } from './local-storage.service';
 
 export class AuthService {
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private webService: WebRequestService,
-    private http: HttpClient) { }
+    private http: HttpClient,
+  ) { }
 
-  private _isLoggedIn: boolean = false;
-
-  get isLoggedIn(): boolean {
-    return this._isLoggedIn;
-  }
-
-  set isLoggedIn(value: boolean) {
-    this._isLoggedIn = value;
-  }
-
-  currentUser() {
+  currentUser(): Promise<any> {
     return this.webService.currentUser();
   }
 
-  login(email: string, password: string) {
-     return this.webService.login(email, password);
-    // .pipe(
-      // shareReplay(),
-      // tap((res: HttpResponse<any>) => {
-        // this.setSession(res.body._id, res.headers.get('x-access-token'), res.headers.get('x-refresh-token'))
-      // })
-    // )
+  login(email: string, password: string): Promise<any> {
+    return this.webService.login(email, password);
   }
 
-  signup(user: IUser) {
+  signup(user: IUser): Promise<any> {
     return this.webService.signup(user);
-    // .pipe(
-      // shareReplay(),
-      // tap((res: HttpResponse<any>) => {
-        // this.setSession(res.body._id, res.headers.get('x-access-token'), res.headers.get('x-refresh-token'))
-      // })
-    // )
   }
 
-
-  logout() {
-    // this.removeSession();
-    this.isLoggedIn = false;
+  logout(): void {
     LocalStorageService.removeSession();
     this.router.navigate(['/login']);
   }
-
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
-import { IRes } from '../../models/response.model';
 
 @Component({
   selector: 'app-menu-bar',
@@ -9,15 +8,11 @@ import { IRes } from '../../models/response.model';
   styleUrls: ['./menu-bar.component.scss']
 })
 
-export class MenuBarComponent {
-
-  constructor(private authService: AuthService) {
-
-  }
-
+export class MenuBarComponent implements OnInit {
   items: MenuItem[];
-
   private _userName: string = null;
+
+  constructor(private authService: AuthService) {}
 
   public get userName(): string {
     return this._userName;
@@ -27,15 +22,7 @@ export class MenuBarComponent {
     this._userName = name;
   }
 
-  // getUserName(): string {
-  //   return this.userName;
-  // }
-
-  // setUserName(uName: string): void {
-  //   this.userName = uName;
-  // }
-
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     const userData = await this.authService.currentUser();
     if (!!userData && userData.data) {
       this.userName = userData.data.data;

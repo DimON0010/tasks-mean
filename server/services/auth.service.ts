@@ -20,7 +20,6 @@ import { PartialSession, EncodeResult, Session, DecodeResult, ExpirationStatus }
           generSalt = salt;
         });
 
-
         result = bcrypt.hashSync(password, generSalt);
 
         return result;

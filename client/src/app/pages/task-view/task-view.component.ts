@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService } from "../../services/task.service";
-import { ActivatedRoute, Params, Router } from "@angular/router";
-import { IList } from "../../models/list.model";
-import { ITask } from "../../models/task.model";
+import { TaskService } from '../../services/task.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { IList } from '../../models/list.model';
+import { ITask } from '../../models/task.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { AxiosResponse } from 'axios';
 
@@ -20,10 +20,12 @@ export class TaskViewComponent implements OnInit {
 
   selectedListId: string = null;
 
-  constructor(private taskService: TaskService,
-              private authService: AuthService,
-              private route: ActivatedRoute,
-              private router: Router) { }
+  constructor(
+    private taskService: TaskService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
 
@@ -48,21 +50,23 @@ export class TaskViewComponent implements OnInit {
     });
   }
 
-  taskUpdateHandler(taskId: string) {
+  taskUpdateHandler(taskId: string): void {
     this.router.navigate(['edit-task/', taskId]);
   }
 
-  listUpdateHandler() {
+  listUpdateHandler(): void {
     this.router.navigate(['edit-list/', this.selectedListId]);
   }
 
-  async onTaskClick(task: ITask) {
-    await this.taskService.complete(task).then(response => { if (response?.status === 200) {
-      task.completed = !task.completed;
-    }});
+  async onTaskClick(task: ITask): Promise<void> {
+    await this.taskService.complete(task).then(response => {
+      if (response?.status === 200) {
+        task.completed = !task.completed;
+      }
+    });
   }
 
-  async deleteListHandler() {
+  async deleteListHandler(): Promise<void> {
     await this.taskService.deleteList(this.selectedListId).then(data => {
       if (data?.status === 200) {
         this.router.navigate(['lists']);
@@ -70,7 +74,7 @@ export class TaskViewComponent implements OnInit {
     });
   }
 
-  async taskDeleteHandler(id: string) {
+  async taskDeleteHandler(id: string): Promise<void> {
     await this.taskService.deleteTask(this.selectedListId, id).then(data => {
       if (data?.status === 200) {
         this.tasks = this.tasks.filter(v => v._id !== id);

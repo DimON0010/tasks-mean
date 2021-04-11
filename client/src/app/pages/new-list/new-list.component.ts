@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskService } from "../../services/task.service";
+import { TaskService } from '../../services/task.service';
 import { Router } from '@angular/router';
-import { IList } from "../../models/list.model";
+import { IList } from '../../models/list.model';
 
 @Component({
   selector: 'app-new-list',

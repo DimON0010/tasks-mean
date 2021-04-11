@@ -5,4 +5,5 @@ node_modules
 
 # ignore WebStorm files
 .idea/*
-build/*
+build
+npm-debug.log

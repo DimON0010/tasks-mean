@@ -39,15 +39,12 @@ export abstract class CrudController<I extends Document, T extends Model<I>> {
   public async update(id: string | ParsedQs | string[] | ParsedQs[], data: Request["body"]): Promise<I> {
     let result;
     try {
-      await this._entity.findByIdAndUpdate({_id: id }, {...data}, {}, function(err, result) {
+      result = await this._entity.findByIdAndUpdate({_id: id }, {...data}, {}, function(err, result) {
         if (err) {
           console.error(err);
         }
-
       })
 
-
-      //why do result returned to console, but not to the res.send()???
       return result;
     } catch (e) {
       throw new Error(`Update is failed: ${e}`);

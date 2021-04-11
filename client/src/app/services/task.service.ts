@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { WebRequestService } from './web-request.service';
 import { ITask } from './../models/task.model';
 import { AxiosResponse } from 'axios';
+import { IList, IListWithTasks } from '../models/list.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,43 +11,45 @@ export class TaskService {
 
   constructor(private webRequestService: WebRequestService) { }
 
-  getList(listId: string) {
+  async getList(listId: string): Promise<AxiosResponse<IList>> {
     return this.webRequestService.get(`api/lists/${listId}`);
   }
 
-  getLists(): Promise<any> {
+  async getLists(): Promise<AxiosResponse<IList[]>> {
     return this.webRequestService.get('api/lists');
   }
-  createList(title: string) {
+
+  async createList(title: string): Promise<AxiosResponse<IList>> {
     return this.webRequestService.post('api/lists', { title });
   }
-  updateList(id: string, title: string) {
+
+  async updateList(id: string, title: string): Promise<AxiosResponse<IList>> {
     return this.webRequestService.patch(`api/lists/${id}`, { title });
   }
 
-  deleteList(id: string) {
+  async deleteList(id: string): Promise<AxiosResponse<IList>> {
     return this.webRequestService.delete(`api/lists/${id}`);
   }
 
-  getTask(taskId: string) {
+  async getTask(taskId: string): Promise<AxiosResponse<ITask>> {
     return this.webRequestService.get(`api/tasks/${taskId}`);
   }
 
-  getTasks(listId: string) {
+  async getTasks(listId: string): Promise<AxiosResponse<IListWithTasks>> {
     return this.webRequestService.get(`api/lists/${listId}`, { withTasks: 'true'});
   }
-  async createTask(title: string, listId: string): Promise<AxiosResponse<any>> {
-    return this.webRequestService.post(`api/tasks`, { title: title, _listId: listId, completed: false });
+  async createTask(title: string, listId: string): Promise<AxiosResponse<ITask>> {
+    return this.webRequestService.post<ITask>(`api/tasks`, { title, _listId: listId, completed: false });
   }
-  deleteTask(listId: string, taskId: string) {
-    return this.webRequestService.delete(`api/tasks/${taskId}`);
+  async deleteTask(listId: string, taskId: string): Promise<AxiosResponse<ITask>> {
+    return this.webRequestService.delete<ITask>(`api/tasks/${taskId}`);
   }
-  updateTask(taskId: string, title: string) {
-    return this.webRequestService.patch(`api/tasks/${taskId}`, { title });
+  async updateTask(taskId: string, title: string): Promise<AxiosResponse<ITask>> {
+    return this.webRequestService.patch<ITask>(`api/tasks/${taskId}`, { title });
   }
 
-  complete(task: ITask) {
-    return this.webRequestService.patch(`api/tasks/${task._id}`, {
+  complete(task: ITask): Promise<AxiosResponse<ITask>> {
+    return this.webRequestService.patch<ITask>(`api/tasks/${task._id}`, {
       completed: !task.completed
     });
   }
