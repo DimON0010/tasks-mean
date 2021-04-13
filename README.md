@@ -16,8 +16,6 @@ Use the command from the root folder
 ```bash
 npm run project-launch 
 ```
-and open 
-```
- [localhost:3000](http://localhost:3000)
+and open  [localhost:3000](http://localhost:3000)
 
-```
+
