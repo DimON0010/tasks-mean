@@ -35,8 +35,8 @@ export class LoginPageComponent implements OnInit {
       LocalStorageService.setAccessToken(response.data);
       this.router.navigate(['/lists']);
     } else {
-      console.error('loginHandle error');
-      this.inputError = response && response.message;
+      console.error('loginHandle error: ' + response);
+      this.inputError = response && 'Invalid login data: ' + response?.message;
     }
   }
 

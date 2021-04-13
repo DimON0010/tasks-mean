@@ -16,7 +16,7 @@
     "dev": "npm run build:client && npm run nodemon",
     "node-modules": "npm i && cd ./client && npm i",
     "node-off": "killall node",
-    "project-launch": "npm-run-all client docker nodemon"
+    "project-launch": "npm run docker && npm run dev"
   },
   "repository": {
     "type": "git",
