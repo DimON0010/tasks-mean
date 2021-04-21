@@ -43,7 +43,7 @@ export class WebRequestService {
     }
   }
 
-  // TODO: add generic type
+
   async post<T>(uri: string, payload: T): Promise<AxiosResponse<T>> {
     try {
       return await this.axiosInstance.post<T>(`${this.ROOT_URL}/${uri}`, payload);
@@ -69,7 +69,7 @@ export class WebRequestService {
     }
   }
 
-  async login(email: string, password: string): Promise<any> {
+  async login(email: string, password: string): Promise<AxiosResponse<IToken>> {
     try {
       const result = await this.axiosInstance.post(`${this.ROOT_URL}/api/users/login`, {
         email,
@@ -82,7 +82,7 @@ export class WebRequestService {
     }
   }
 
-  async signup(user: IUser): Promise<any> {
+  async signup(user: IUser): Promise<AxiosResponse<IToken>> {
     try {
       return await this.axiosInstance.post(`${this.ROOT_URL}/api/users`, {
         ...user

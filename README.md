@@ -9,7 +9,7 @@ Use the node package manager to install node_modules. Use the command from the r
 ```bash
 npm run node-modules
 ```
-Also rename file \* local.env \* to \* local.env \* in the root folder of the project.
+Also rename file \* local.env \* to \* .env \* in the root folder of the project.
 ## Launch
 
 Use the command from the root folder

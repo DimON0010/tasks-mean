@@ -14,15 +14,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // CORS
-// const cors = require('cors');
-//app.options('*', cors());
+
 app.use(cors());
 
 
 app.use('/', express.static(process.cwd()+"/client/dist/client") );
 
 app.use('*', (req: Request, res: Response) => {
-  // res.send('<div><p> Hello World </p></div>')
   res.sendFile(process.cwd()+"/client/dist/client")
 });
 
